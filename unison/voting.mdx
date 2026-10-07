@@ -1,0 +1,96 @@
+---
+title: "Vote and Report Lyrics in Unison"
+sidebarTitle: "Voting"
+description: "Upvote, downvote, or report Unison lyrics directly from the Better Lyrics panel. Reports include reasons so curators can act on quality issues quickly."
+---
+
+Voting is the fastest way to improve lyrics quality for everyone. When you upvote an accurate submission, its effective score rises and it becomes more likely to be selected over competing entries. When you downvote or report a bad one, you send a signal that helps curators prioritise what to fix. All of this happens directly inside the Better Lyrics side panel — no account, no external site required.
+
+## When the Unison card appears
+
+The Unison card is only shown when **Unison is the active lyrics provider** for the current song. If a higher-priority provider (such as Better Lyrics or BiniLyrics) has lyrics for the track, that provider is shown instead and no Unison card is displayed.
+
+To check which provider is active, look at the source label in the floating dock. If you want to force Unison, go to **Settings → Sources** and drag the desired Unison tier to the top of the priority list, or temporarily disable the providers ranked above it.
+
+## Vote and report buttons
+
+The Unison card rendered below the lyrics contains three action buttons:
+
+| Button | Icon | Action |
+|---|---|---|
+| **Upvote** | 👍 | Signals that the lyrics are correct and well-timed |
+| **Downvote** | 👎 | Signals that the lyrics have a problem |
+| **Report** | 🚩 | Opens a reason picker and flags the entry for curator review |
+
+Clicking the active vote button a second time removes your vote (toggles it off). You can switch between upvote and downvote freely — only your most recent vote is counted.
+
+## Report reasons
+
+When you click the report button, you are prompted to pick a reason. The available reasons are:
+
+| Reason | When to use |
+|---|---|
+| `wrong_song` | The lyrics belong to a completely different track |
+| `bad_sync` | The timestamps are misaligned — too early, too late, or erratic |
+| `offensive` | The content is harmful, hateful, or explicitly inappropriate |
+| `spam` | Nonsensical, repeated, or placeholder content |
+| `other` | Any other issue not covered above |
+
+Providing an accurate reason helps curators act faster — a `bad_sync` report tells a curator to check timing rather than wording, saving review time.
+
+## The floating dock
+
+In addition to the Unison card footer, a second set of vote buttons lives in the **floating dock** — the compact pill that hovers over the lyrics panel. Because the dock is anchored to a fixed position on screen rather than scrolling with the lyrics, it stays reachable at all times, even when you are deep into a long song.
+
+The dock shows the upvote and downvote buttons alongside the other player controls (source selector, translation, romanization, etc.). Your current vote state is reflected in both places simultaneously — if you vote from the dock, the card footer button updates to match, and vice versa.
+
+<Tip>
+  The floating dock is especially useful in **fullscreen mode**. When the player is fullscreened, the Unison card at the bottom of the panel may scroll out of view, but the dock stays pinned in your chosen corner. Cast votes without ever leaving the immersive view.
+</Tip>
+
+## Dock position settings
+
+The dock can be anchored to any of six positions around the lyrics panel. Change the position from **Settings → Display → Unison Actions**.
+
+| Position | Placement |
+|---|---|
+| `top-left` | Top edge, aligned to the left |
+| `top-center` | Top edge, horizontally centred |
+| `top-right` | Top edge, aligned to the right |
+| `bottom-left` | Bottom edge, aligned to the left |
+| `bottom-center` | Bottom edge, horizontally centred |
+| `bottom-right` | Bottom edge, aligned to the right (default) |
+
+The dock animates smoothly between positions when you change the setting, so you can preview each option without the panel jumping.
+
+## Trust tier pill
+
+Every Unison card displays a **confidence tier** badge that reflects how trustworthy the submission has been deemed based on community votes and curator assessment:
+
+| Tier | Icon | Meaning |
+|---|---|---|
+| `low` | ❓ Unverified | New or unreviewed submission |
+| `medium` | 🛡️ Trusted | Passed basic review or has positive community votes |
+| `high` | ⭐ Top-rated | Highly upvoted or curator-approved, best available version |
+
+The tier is shown as a pill in the card header of both the inline card and the Unison web app feed.
+
+## CSS classes for theme authors
+
+If you are building a custom theme and want to style the Unison voting controls, the relevant classes are:
+
+| Class | Element |
+|---|---|
+| `.blyrics-dock` | Outer wrapper for the floating dock; carries the `data-position` attribute |
+| `.blyrics-dock__inner` | Inner pill container with the blur backdrop |
+| `.blyrics-footer__vote` | Individual vote/report button (used in both the card footer and the dock) |
+| `.blyrics-footer__vote--active` | Applied to a vote button when its vote is currently cast |
+
+Example: making active vote buttons more visible in a custom theme:
+
+```css
+.blyrics-footer__vote--active svg path[fill-opacity] {
+  fill-opacity: 1;
+  color: hsl(210 100% 70%);
+}
+```

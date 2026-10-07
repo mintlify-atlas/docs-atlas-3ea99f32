@@ -1,0 +1,86 @@
+---
+title: "Real-Time Lyrics Translations and Romanization"
+sidebarTitle: "Translations"
+description: "Enable translations or romanization for any song in Better Lyrics. Supports 50+ languages with a per-song toggle and always-on setting in extension options."
+---
+
+Better Lyrics can translate every lyric line into your preferred language, or convert non-Latin scripts into their phonetic Latin equivalents (romanization), as the song plays. Both features work line by line in real time: translated or romanized text appears beneath each original lyric as the panel scrolls through the song. You can switch them on for a single session using the floating dock, or keep them always enabled in extension settings.
+
+## How to Enable
+
+<Steps>
+  <Step title="Open extension settings">
+    Click the Better Lyrics icon in your browser's extensions toolbar to open the settings popup.
+  </Step>
+  <Step title="Go to the Language tab">
+    Select the **Language** tab from the settings navigation.
+  </Step>
+  <Step title="Toggle Translations or Romanization">
+    Enable the **Translations** toggle to show translated text below each line. Enable **Romanization** to convert non-Latin scripts to a phonetic Latin spelling. Both can be active at the same time.
+  </Step>
+  <Step title="Choose your target language">
+    Use the **Translation Language** dropdown to pick the language you want lyrics translated into. The default is English. This setting also controls which language romanization falls back to when auto-detecting the script.
+  </Step>
+</Steps>
+
+Changes apply immediately — the current song's lyrics reload with translations or romanization applied.
+
+## Translations
+
+When translations are enabled, each lyric line gains a secondary row beneath it showing the translated text in your chosen language. Translation requests are batched and chunked to stay within URL length limits, and results are cached for the duration of the session so repeated plays of the same song don't re-fetch.
+
+The translation pipeline first checks the Unison backend (which coalesces concurrent translate and romanize requests into a single API call), then falls back to Google Translate for any lines not covered. Lines that are identical in both languages — or that consist only of a music note symbol — are silently skipped.
+
+## Romanization
+
+Romanization converts non-Latin scripts — Japanese, Korean, Chinese, Arabic, Thai, and others — into a phonetically equivalent Latin-alphabet spelling, so you can read along even if you don't know the original script.
+
+The extension auto-detects the dominant script in the lyrics and picks the appropriate romanization scheme. If the detected language is in the supported list, the native transliteration is used (for example, Romaji for Japanese, Revised Romanization for Korean). For languages not in the list the romanization falls back to a transliteration via the Google Translate romanization endpoint.
+
+Supported romanization languages include:
+
+<CardGroup cols={3}>
+  <Card title="East Asian">Japanese, Korean, Chinese (Simplified), Chinese (Traditional), Chinese (HK)</Card>
+  <Card title="South Asian">Hindi, Bengali, Tamil, Telugu, Malayalam, Kannada, Gujarati, Punjabi, Marathi, Urdu, Sinhala</Card>
+  <Card title="Other scripts">Arabic, Thai, Greek, Hebrew, Russian, Burmese, Georgian, Khmer, Lao, Persian</Card>
+</CardGroup>
+
+## Dock Quick-Toggle
+
+The floating dock at the edge of the lyrics panel exposes quick-access controls so you can toggle translations or romanization without opening settings. The default dock control order is:
+
+```
+source → translate → romanize → offset → refresh → pictureInPicture
+```
+
+The **translate** control cycles translation on and off for the current song. The **romanize** control does the same for romanization. These controls only affect the current session; they don't change the saved setting in the extension popup.
+
+## DOM Structure for Theme Authors
+
+Translated and romanized text is rendered inside the same `.blyrics--line` element as the original lyric, as additional child rows:
+
+```html
+<div class="blyrics--line" data-agent="v1">
+  <div class="blyrics-line-main">Original lyric text</div>
+  <div class="blyrics--romanized blyrics-content-line">Rōmaji or Latin transcription</div>
+  <div class="blyrics--translated blyrics-content-line">Translated text in target language</div>
+</div>
+```
+
+Relevant CSS classes and variables:
+
+| Selector / Variable | Description |
+|---|---|
+| `.blyrics--translated` | Translated text row; appears below the original lyric |
+| `.blyrics--romanized` | Romanized text row; styled with a subtle pill background by default |
+| `--blyrics-translated-font-size` | Font size for translated/romanized rows (default `2rem`) |
+| `--blyrics-translated-font-weight` | Font weight for translated/romanized rows (default `600`) |
+| `--blyrics-translated-font-family` | Font family for translated/romanized rows |
+| `--blyrics-translated-color` | Text color for translated/romanized rows |
+| `--blyrics-translated-opacity` | Opacity of translated/romanized text (used in the default color) |
+
+If romanization data is timed (syllable-level), the `.blyrics--romanized` element can contain the same `.blyrics-line-main`, `.blyrics-word-group`, and `.blyrics--word` structure as the primary line, enabling per-word highlighting on the romanized text.
+
+<Note>
+Translations and romanizations are fetched from external APIs (the Unison backend and Google Translate) and require an active internet connection. If translation fails — for example, due to a network issue or an API limit — the original untranslated lyrics are shown without any error message.
+</Note>

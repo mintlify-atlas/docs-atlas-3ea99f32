@@ -1,0 +1,128 @@
+---
+title: "Picture-in-Picture Floating Lyrics Window"
+sidebarTitle: "Picture-in-Picture"
+description: "Better Lyrics can open a compact floating window that shows the current lyric line, so you can see lyrics in any tab without returning to YouTube Music."
+---
+
+The Picture-in-Picture (PiP) feature opens a compact, always-on-top floating window that mirrors the currently active lyric line from the playing song. Because the window uses the browser's Document Picture-in-Picture API, it stays visible while you switch to other tabs, browse the web, or work in different applications — you never have to alt-tab back to YouTube Music to follow along.
+
+## How to Open
+
+The PiP window is launched from the **floating dock** that appears at the edge of the lyrics panel. The dock is visible whenever lyrics are displayed.
+
+<Steps>
+  <Step title="Open YouTube Music and play a song">
+    Navigate to [music.youtube.com](https://music.youtube.com) and start playing any track. Wait for the lyrics panel to load.
+  </Step>
+  <Step title="Locate the floating dock">
+    The floating dock appears near the lyrics panel. It contains controls for the current source, translations, romanization, seek offset, refresh, and the PiP toggle.
+  </Step>
+  <Step title="Click the PiP icon">
+    Click the **Picture-in-Picture** icon (the last control in the dock by default) to open the floating window. The icon looks like a small rectangle-within-rectangle with an arrow.
+  </Step>
+  <Step title="Position and resize">
+    Drag the floating window to any position on your screen. You can also resize it. The window defaults to a horizontal layout (720 × 300 px) but can be opened in a vertical layout (340 × 720 px) depending on your settings.
+  </Step>
+</Steps>
+
+To close the window, click the PiP icon in the dock again, or close the window directly using the browser's close button in the floating window's title bar.
+
+## What the Window Shows
+
+The PiP window is a fully featured companion view, not just a plain text overlay. It includes:
+
+<CardGroup cols={2}>
+  <Card title="Current Lyric Line" icon="music">
+    The active lyric line updates in real time, following the same timing as the main lyrics panel. Lines fade in and out with smooth reveal animations.
+  </Card>
+  <Card title="Album Artwork" icon="image">
+    Album art transitions between tracks with an animated shuffle, flip, push, or crossfade effect. An animated artwork backdrop fills the window background.
+  </Card>
+  <Card title="Song Title & Artist" icon="user">
+    The song title and artist name appear in a header with smooth spring-word transitions on track changes. Long titles scroll as a marquee.
+  </Card>
+  <Card title="Playback Controls" icon="play">
+    Previous, play/pause, and next buttons let you control the player without switching tabs. A seekable progress bar shows elapsed and remaining time.
+  </Card>
+</CardGroup>
+
+The PiP lyrics view renders from the same parsed lyric data as the main panel, including translations and romanization when those features are enabled.
+
+## Technical Details
+
+### Toggle Selector
+
+The PiP button in the dock is identified by the `data-blyrics-picture-in-picture-toggle` attribute:
+
+```css
+/* Target the PiP toggle button with CSS */
+[data-blyrics-picture-in-picture-toggle] {
+  /* custom styles */
+}
+```
+
+This selector is exported as `PICTURE_IN_PICTURE_TOGGLE_SELECTOR` in the extension's constants:
+
+```ts
+export const PICTURE_IN_PICTURE_TOGGLE_SELECTOR =
+  "[data-blyrics-picture-in-picture-toggle]" as const;
+```
+
+### Dock Control Key
+
+`"pictureInPicture"` is the key used for this control in the dock's default order:
+
+```ts
+export const DOCK_CONTROL_ORDER_DEFAULT = [
+  "source",
+  "translate",
+  "romanize",
+  "offset",
+  "refresh",
+  "pictureInPicture",
+] as const;
+```
+
+The control is only rendered when `AppState.isDockPictureInPictureEnabled` is `true` and the browser supports the Document Picture-in-Picture API. Browsers that don't support the API (such as Firefox at the time of writing) will not show the control.
+
+### Window Sizes
+
+The PiP window opens in one of two fixed layouts:
+
+| Layout | Width | Height |
+|---|---|---|
+| Horizontal (default) | 720 px | 300 px |
+| Vertical | 340 px | 720 px |
+
+### Stylesheet
+
+All PiP window styling lives in `public/css/blyrics/picture-in-picture.css`. This file is loaded into the floating window at open time, so it is isolated from the main page's styles. Theme authors can target elements inside the PiP shell using the `.blyrics-pip-shell` selector:
+
+```css
+/* Target the lyrics area inside the PiP window */
+.blyrics-pip-shell .blyrics-container {
+  --blyrics-target-scroll-pos-ratio: 0.37;
+}
+
+/* Dim old lyrics while new ones load */
+.blyrics-pip-scroller[data-held] {
+  opacity: 0.5;
+}
+```
+
+Key PiP CSS classes:
+
+| Class | Element |
+|---|---|
+| `.blyrics-pip-shell` | Root `<main>` element of the PiP window |
+| `.blyrics-pip-lyrics` | Lyrics viewport |
+| `.blyrics-pip-scroller` | Scroll container that holds the lyrics lines |
+| `.blyrics-pip-artwork` | Album artwork container |
+| `.blyrics-pip-backdrop` | Blurred background layer |
+| `.blyrics-pip-header` | Title and artist header area |
+| `.blyrics-pip-progress` | Seekable progress bar |
+| `.blyrics-pip-loader` | Loading indicator shown between tracks |
+
+<Tip>
+PiP is especially useful when watching other YouTube videos, browsing, or working in another application while music plays in a background tab. Because the window stays on top of all other content, you can follow lyrics without switching windows — just glance at the corner of your screen.
+</Tip>

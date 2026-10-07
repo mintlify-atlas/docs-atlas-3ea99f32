@@ -1,0 +1,174 @@
+---
+title: "Contributing to Better Lyrics: Code and Translations"
+sidebarTitle: "Contributing"
+description: "Learn how to contribute code, translations, or bug reports to Better Lyrics. Covers dev setup, code guidelines, the AI code policy, and Crowdin translations."
+---
+
+Better Lyrics is a community-driven project and welcomes contributions of all kinds — from bug reports and feature requests to code patches and translated strings. Whether you're fixing a typo or diving deep into the renderer, this guide has everything you need to get started and submit work that lands cleanly.
+
+## Issue-First Policy
+
+**Open an issue before submitting a PR.** Discuss your proposed change first to make sure it aligns with the project's direction. Pull requests that arrive without prior discussion may be closed, no matter how well-written the code is.
+
+The one exception: typo fixes and small documentation updates can be submitted directly without an issue.
+
+## AI-Generated Code Policy
+
+Better Lyrics does not accept AI-generated pull requests from outside contributors. If you prompted an agent to produce a change and are not in a position to defend every line of it during code review, do not open a pull request.
+
+This policy isn't an objection to the tools themselves — it's a practical recognition that reviewing a patch nobody on either side fully understands costs more than writing the change from scratch. The codebase carries a lot of load-bearing context that an agent cannot infer: the MAIN/ISOLATED content script split, the UI guard baselines, and a renderer that lives in a separate repository.
+
+**The preferred path is to [open a feature request](https://github.com/better-lyrics/better-lyrics/issues/new/choose).** A clear description of the problem, what you expected, and why it matters is more useful to the maintainers than a patch — and costs you less effort. Bug reports with reproduction steps are always welcome.
+
+If you do use an AI agent as an assistant on a change you wrote, understand, and have tested yourself, disclose it in the PR description. Undisclosed agent-authored PRs are closed without review.
+
+## Development Setup
+
+<Steps>
+  <Step title="Prerequisites">
+    Make sure you have the following installed before you begin:
+
+    - **Node.js 22.12 or later** (the `engines` field in `package.json` enforces this)
+    - **npm** (bundled with Node.js)
+  </Step>
+
+  <Step title="Clone the repo and install dependencies">
+    ```bash
+    git clone https://github.com/better-lyrics/better-lyrics.git && cd better-lyrics && npm install
+    ```
+  </Step>
+
+  <Step title="Build the extension">
+    Run a full production build to confirm everything compiles correctly:
+
+    ```bash
+    npm run build
+    ```
+
+    Build outputs are written to `dist/chrome/` and `dist/firefox/`. Load either folder as an unpacked extension in your browser to verify the build.
+  </Step>
+
+  <Step title="Start development mode">
+    For day-to-day work, use watch mode instead of rebuilding manually:
+
+    ```bash
+    npm run dev
+    ```
+
+    This opens Chrome on YouTube Music with the extension loaded and hot reload enabled. For Firefox, use `npm run dev:firefox` instead.
+  </Step>
+</Steps>
+
+## Development Commands
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Watch mode with hot reload (Chrome) |
+| `npm run dev:firefox` | Watch mode with hot reload (Firefox) |
+| `npm run build` | Production build for all browsers |
+| `npm run lint` | Run linter and formatter (Biome) |
+| `npm run typecheck` | TypeScript type check (no emit) |
+
+Before opening a pull request, make sure all three checks pass: `npm run typecheck`, `npm run lint`, and `npm run build`.
+
+## Code Guidelines
+
+### Imports
+
+- Use the project's path aliases — `@core/*`, `@constants`, `@utils`, `@modules/*` — rather than relative paths
+- **Named imports only:** `import { foo } from "module"` — never `import * as foo`
+- Never import from `@/index`; doing so causes content script code to execute in the wrong context
+
+### DOM & Security
+
+- **Never use `innerHTML`** — use `createElement`, `textContent`, and `replaceChildren` instead; this prevents XSS vulnerabilities from creeping into the extension
+- **No empty catch blocks** — always log errors with enough context to diagnose them later
+
+### Error Logging
+
+- In content scripts, use `log()` from `@utils` with the constants defined in `@constants`
+- In options/extension pages, use `console.error()` with the log prefix constants
+
+### Style
+
+- Avoid inline comments unless they are genuinely essential
+- Use the section divider format `// -- Section Name --------------------------` to break up long files
+
+## Working on the Renderer
+
+The lyrics renderer and format parsers live in their own repository, [braccato](https://github.com/better-lyrics/braccato), and are pulled into this project as the published `@braccato/core` and `@braccato/parsers` packages.
+
+For most renderer work, you don't need this extension at all. The braccato repo ships a demo page with Vite and hot reload — run `pnpm -C demo dev`, open `http://localhost:5173/`, and timing or CSS changes appear as you type. Come back to this repo when you need to check parts the demo can't show: the lyrics tab, fullscreen, the floating window, or real song timings.
+
+When you do need to test renderer changes end-to-end in the extension, symlink your local braccato checkout over the installed copy:
+
+```bash
+# 1. Clone and build braccato
+git clone https://github.com/better-lyrics/braccato.git
+cd braccato
+pnpm install
+pnpm build:packages
+
+# 2. Register the link
+cd packages/core && npm link
+```
+
+Then point this repo at your local build:
+
+```bash
+cd better-lyrics
+npm link @braccato/core
+npm run dev
+```
+
+The symlink lives only in `node_modules`, so `package.json` and `package-lock.json` stay clean. After each edit to the renderer, rebuild braccato with `pnpm build:packages`, then save any file in `src/` to trigger the extension's dev server to pick up the fresh package output.
+
+When you're done, run `npm install` to restore the published package. Avoid `npm unlink` — it removes the dependency from `package.json` entirely rather than just dropping the symlink.
+
+## Translation Contributions
+
+Better Lyrics uses [Crowdin](https://crowdin.com/project/better-lyrics) for translation management. All translation work happens directly in the Crowdin interface — no need to edit files in the repo manually.
+
+### How to Contribute
+
+1. Visit the [Better Lyrics Crowdin project](https://crowdin.com/project/better-lyrics)
+2. Select your language, or request a new one if it isn't listed
+3. Translate strings directly in the Crowdin editor
+4. Translations are automatically synced back to the repository on a regular schedule
+
+### Translation Tips
+
+- Keep translations concise — UI space is limited, and long strings can break layouts
+- Preserve any placeholders such as `$1` and `$2` exactly as they appear
+- Read the `description` field for each string to understand the context before translating
+- **Match word count to the original.** If the original is a single word, use a single word. Multi-word translations for single-word strings can overflow UI elements
+- Prefer natural phrasing over literal translation — use what a native speaker would actually say
+
+### I18n Key Naming Convention
+
+When adding new strings to the codebase, follow the `area_component_element` pattern:
+
+| Key | Meaning |
+|---|---|
+| `options_tab_general` | Options page → tab → general tab label |
+| `marketplace_install` | Marketplace → install button |
+| `lyrics_source` | Lyrics display → source label |
+
+Consistent naming makes it easy to find and audit strings across the codebase and in Crowdin.
+
+## Links
+
+<CardGroup cols={2}>
+  <Card title="GitHub Issues" icon="circle-dot" href="https://github.com/better-lyrics/better-lyrics/issues/new/choose">
+    Report bugs or open a feature request before submitting a PR
+  </Card>
+  <Card title="Discord Community" icon="discord" href="https://discord.gg/UsHE3d5fWF">
+    Ask questions, discuss ideas, and get feedback in real time
+  </Card>
+  <Card title="Crowdin Translations" icon="language" href="https://crowdin.com/project/better-lyrics">
+    Help translate Better Lyrics into your language
+  </Card>
+  <Card title="GitHub Sponsors" icon="heart" href="https://github.com/sponsors/boidushya">
+    Support the project and help cover hosting and development costs
+  </Card>
+</CardGroup>

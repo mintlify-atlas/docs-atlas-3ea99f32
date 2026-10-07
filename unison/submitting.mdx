@@ -1,0 +1,74 @@
+---
+title: "Submit Lyrics to Unison from Better Lyrics"
+sidebarTitle: "Submitting"
+description: "Submit corrected or new lyrics to Unison directly from the Better Lyrics extension. Supports LRC, plain text, and rich-sync formats with pre-filled metadata."
+---
+
+Whenever lyrics are missing, badly timed, or just plain wrong, you can fix them for everyone by submitting to Unison. The submission form opens directly inside the extension or on the Unison web app, and it arrives pre-filled with the current song's metadata — so you only need to paste your corrected lyrics and hit submit.
+
+## How to submit
+
+<Steps>
+  <Step title="Open a song in YouTube Music">
+    Start playing the song whose lyrics you want to correct or add. Make sure Better Lyrics is active and the lyrics panel is open.
+  </Step>
+  <Step title="Open the submission form">
+    At the bottom of the lyrics view, click **"Submit to Unison"**. Alternatively, click the Unison logo or the "Open Unison" link in the Unison card footer — both routes take you to the same pre-filled submission form on [unison.betterlyrics.org](https://unison.betterlyrics.org).
+  </Step>
+  <Step title="Verify the pre-filled metadata">
+    The form is automatically populated with the song title, artist name, and YouTube Music video ID from the currently playing track. Check that these are correct before continuing.
+  </Step>
+  <Step title="Paste your lyrics">
+    Paste your corrected lyrics in whichever format you have. Unison accepts all three supported formats — see the table below. The form will validate your input and show any detected issues before you submit.
+  </Step>
+  <Step title="Submit for review">
+    Click **Submit**. Your entry enters a **pending** state and is queued for curator review. If your revision falls within the automatic approval thresholds (small text drift, small timing drift, and no open flags), it may go live without manual intervention; otherwise a curator will review it.
+  </Step>
+</Steps>
+
+## Supported formats
+
+| Format | Sync level | Description |
+|---|---|---|
+| **LRC** | Line-synced | Standard `.lrc` timestamped format: `[mm:ss.xx] Lyric line`. The most widely supported format across providers. |
+| **Plain text** | Unsynced | Lyrics without any timestamps. Useful when you have correct words but no timing data. |
+| **Rich-sync (TTML)** | Word/syllable-timed | TTML-based format that supports per-word or per-syllable timing — the same format Better Lyrics uses for its karaoke-style display. |
+
+<Tip>
+  Before submitting, check whether a better version of the lyrics already exists in another provider. Go to **Settings → Sources** and try toggling through the available providers — the correct, well-timed lyrics you are looking for may already be in Musixmatch, BiniLyrics, or LRCLib. Submitting to Unison is most valuable when none of the existing providers have an acceptable version.
+</Tip>
+
+## Tracking your submissions
+
+After submitting, open the Unison page at [unison.betterlyrics.org](https://unison.betterlyrics.org) and switch to the **My Submissions** tab. From there you can:
+
+- See the current review status of each entry (`live`, `pending`, `rejected`, or `withdrawn`).
+- Edit a pending submission to address reviewer feedback before it is assessed.
+- Withdraw a submission you no longer want in the queue.
+- View the full revision history of any entry you have contributed to.
+
+## Revision statuses explained
+
+| Status | Meaning |
+|---|---|
+| `live` | Approved and currently served to users |
+| `pending` | Awaiting curator review |
+| `rejected` | Declined by a curator; a review note explains why |
+| `withdrawn` | Removed by you before or after review |
+| `superseded` | Replaced by a newer revision |
+| `past` | A previous live revision that has since been updated |
+
+## Quality guidelines
+
+Submissions are served directly to everyone using Better Lyrics, so quality matters. Common reasons a submission ends up pending or gets rejected include:
+
+- **Wrong lyrics** — lyrics from a different song or version (e.g., live vs. studio recording).
+- **Bad timing** — timestamps that are consistently early, late, or misaligned to syllable boundaries.
+- **Offensive content** — profanity or harmful material inserted into otherwise clean lyrics.
+- **Spam** — repeated or nonsensical content.
+
+Take a moment to listen through the song with your submitted lyrics before hitting submit — small timing corrections in particular make a noticeable difference to the karaoke-style display.
+
+<Note>
+  Submitting to Unison requires an **identity key**. If you have not set one up yet, open the extension popup, go to the **Identity** tab, and generate a key. Your key is stored locally in the browser and is never shared. You can export and import it to transfer your identity between devices.
+</Note>

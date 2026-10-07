@@ -1,0 +1,53 @@
+---
+title: "Lyrics Providers: Sources and Priority Order"
+sidebarTitle: "Sources"
+description: "Better Lyrics fetches from 16 providers. Drag to reorder priority, toggle sources on or off, and understand sync levels from syllable down to unsynced."
+---
+
+The Sources tab is where you control which lyrics providers Better Lyrics uses and in what order it tries them. Each provider appears as a row in a draggable list — drag a row up or down to change its priority, and use the toggle on the right to enable or disable it entirely. When fetching lyrics for a song, the extension works down the list from highest to lowest priority and uses the first provider that returns a valid result.
+
+## Provider priority order
+
+The table below reflects the default priority order. Priority 1 is tried first; if it returns no result, the extension falls through to priority 2, and so on.
+
+| Priority | Provider | Sync Level |
+| --- | --- | --- |
+| 1 | Better Lyrics | Syllable |
+| 2 | Unison | Syllable |
+| 3 | BiniLyrics | Syllable |
+| 4 | Unison | Word |
+| 5 | Better Lyrics Portato | Word |
+| 6 | Musixmatch | Word |
+| 7 | Better Lyrics | Line |
+| 8 | Unison | Line |
+| 9 | YouTube Captions | Line |
+| 10 | BiniLyrics | Line |
+| 11 | LRCLib | Line |
+| 12 | Better Lyrics Legato | Line |
+| 13 | Musixmatch | Line |
+| 14 | YouTube | Unsynced |
+| 15 | Unison | Unsynced |
+| 16 | LRCLib | Unsynced |
+
+## Sync levels explained
+
+Better Lyrics groups providers into four sync tiers based on how precisely their timestamps are aligned to the audio.
+
+| Sync Level | How it works |
+| --- | --- |
+| **Syllable** | Each syllable carries its own timestamp. The active word is highlighted with a karaoke-style swipe that advances syllable by syllable as the audio plays. This is the most detailed tier. |
+| **Word** | Each word has its own timestamp. The current word lights up as the song progresses, giving a word-by-word highlight effect without the per-syllable swipe. |
+| **Line** | Each lyric line has a start timestamp. The entire line is highlighted when it becomes active and stays highlighted until the next line begins. |
+| **Unsynced** | No timing information is available. The full text is displayed as a static block with no highlighting. Passive scroll (configurable in Display settings) can help you follow along manually. |
+
+## How provider selection works
+
+When a song starts, the extension queries providers in priority order. It picks the **first enabled provider** that returns a non-empty result for that song. Because higher-priority entries default to richer sync levels, you will usually get syllable-synced lyrics whenever they are available. If a song has no syllable-level data anywhere, the extension falls through automatically to word, then line, then unsynced providers.
+
+Results are cached locally for 7 days. If you change the provider order or toggle providers after lyrics have already loaded, click the **Refresh** button in the floating dock (or reload the page) to re-fetch with the new configuration.
+
+<Tip>
+  If the lyrics shown are wrong, out of sync, or missing lines, open Sources and move a different provider higher in the list, then click **Refresh** in the dock. A better version of the lyrics may already exist with another provider. If you want to fix the lyrics for everyone, use the **Submit to Unison** button at the bottom of the lyrics panel.
+</Tip>
+
+Adding custom providers beyond those listed above is not currently supported.

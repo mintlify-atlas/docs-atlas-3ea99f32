@@ -1,0 +1,48 @@
+---
+title: "Display Settings: Fullscreen, Animations, and Layout"
+sidebarTitle: "Display"
+description: "Control Better Lyrics visual behavior: blurred album art background, fullscreen mode, stylized animations, passive scroll, and the Unison floating dock position."
+---
+
+The Display tab controls how lyrics look and behave on screen. Options here affect visual elements — from the background treatment and fullscreen mode to how animations are rendered and where the floating dock sits. Changes take effect immediately on the active YouTube Music tab.
+
+## Display options
+
+| Option | Default | Description |
+| --- | --- | --- |
+| Blurred album art background | Enabled | Fills the lyrics panel background with a soft, blurred version of the current song's album artwork. Disable for a plain solid background. |
+| Full screen mode | Enabled | Enables the fullscreen lyrics view. When active, you can press **F** on your keyboard (with the window focused) or hover the player bar and click the fullscreen icon (**⛶**) to enter fullscreen. |
+| Auto-hide cursor in fullscreen mode | Enabled | Hides the mouse cursor after 3 seconds of inactivity while in fullscreen. The cursor reappears on the next mouse movement. |
+| Stylized animations — Background / Wobble / Glow | Enabled | Controls the animated visual effects applied to the lyrics panel. Disabling this injects a separate CSS override that targets the `--blyrics-animate-*` CSS variables used by the renderer. |
+| Passive scroll for unsynced lyrics | Enabled | When viewing unsynced (untimed) lyrics, lets you scroll through the text freely without the view being snapped or locked to a position. |
+| Unison Actions (pinned dock position) | Manage | Configures the floating Unison dock. The **Manage** button opens a sub-panel where you can choose the dock anchor point, toggle individual dock controls, and reorder them. |
+
+## Fullscreen mode
+
+When fullscreen is enabled, you have two ways to enter it:
+
+- Press **F** on your keyboard while the YouTube Music window is focused.
+- Hover over the player bar at the bottom of the page and click the fullscreen icon (**⛶**) that appears.
+
+When fullscreen mode is **disabled** in settings, the extension sets the `blyrics-dfs` attribute on both `#layout` and `#player-page` in the page DOM. CSS rules keyed to that attribute suppress the fullscreen UI and the fullscreen button, so neither the keyboard shortcut nor the toolbar icon will open it.
+
+## Stylized animations
+
+The three animation sub-options — Background, Wobble, and Glow — each map to a `--blyrics-animate-*` CSS custom property used by the lyrics renderer. When you disable stylized animations, the extension dynamically injects a stylesheet (`blyrics-disable-effects`) that overrides those properties. Removing the override (by re-enabling animations) deletes the injected element from `<head>` so the default values take over again immediately.
+
+If you have a `prefers-reduced-motion: reduce` setting active in your operating system or browser, Better Lyrics respects it by suppressing vestibular motion triggers — no spinning, bouncing, or parallax effects are applied regardless of the toggle state here.
+
+<Note>
+  Users who have enabled **prefers-reduced-motion** at the OS or browser level will not see vestibular animation effects even if stylized animations are toggled on in settings. This is intentional accessibility behavior and cannot be overridden per-song.
+</Note>
+
+## Unison dock position
+
+The floating dock that shows source info, translate, romanize, offset, and other controls can be pinned to any of six anchor positions on the screen:
+
+| Row | Left | Center | Right |
+| --- | --- | --- | --- |
+| Top | top-left | top-center | top-right |
+| Bottom | bottom-left | bottom-center | **bottom-right** (default) |
+
+Open **Manage** in the Unison Actions row to drag the dock to your preferred corner, toggle individual buttons on or off, and reorder the controls within the dock strip.

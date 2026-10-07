@@ -1,0 +1,118 @@
+---
+title: "Install Better Lyrics on Chrome, Firefox, and Edge"
+sidebarTitle: "Installation"
+description: "Install Better Lyrics from the Chrome Web Store, Firefox Add-ons, or Microsoft Edge Add-ons. Also covers manual installation from source or release ZIP."
+---
+
+The fastest way to install Better Lyrics is through your browser's official extension store — it takes about thirty seconds and keeps the extension updated automatically. If you need a specific version, want to audit the code before running it, or are contributing to the project, the manual and build-from-source paths below have you covered too.
+
+## Install from a Store
+
+<Tabs>
+  <Tab title="Chrome">
+    Better Lyrics is published on the Chrome Web Store and works on Chrome, Brave, Arc, Opera, and any other Chromium-based browser.
+
+    1. Open the [Better Lyrics listing on the Chrome Web Store](https://chromewebstore.google.com/detail/better-lyrics/effdbpeggelllpfkjppbokhmmiinhlmg).
+    2. Click **Add to Chrome**.
+    3. Confirm the permissions prompt by clicking **Add extension**.
+    4. The Better Lyrics icon will appear in your extensions toolbar. You're ready to go.
+  </Tab>
+  <Tab title="Firefox">
+    Better Lyrics is available as a signed add-on on Mozilla's official catalog.
+
+    1. Open the [Better Lyrics listing on Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/better-lyrics/).
+    2. Click **Add to Firefox**.
+    3. Confirm the permissions prompt by clicking **Add**.
+    4. The Better Lyrics icon will appear in your toolbar. You're ready to go.
+  </Tab>
+  <Tab title="Edge">
+    Better Lyrics is published on the Microsoft Edge Add-ons store.
+
+    1. Open the [Better Lyrics listing on Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/better-lyrics-lyrics-for/mjfeaklppoegooljmjicjdbiccgjdlhd).
+    2. Click **Get**.
+    3. Confirm the permissions prompt by clicking **Add extension**.
+    4. The Better Lyrics icon will appear in your extensions toolbar. You're ready to go.
+  </Tab>
+</Tabs>
+
+## Manual Installation
+
+If you want to install a specific release without building from source, download a pre-built ZIP from the [GitHub releases page](https://github.com/better-lyrics/better-lyrics/releases). Each release ZIP contains both a `chrome/` and a `firefox/` folder, ready to load directly.
+
+### Chrome (and Chromium-based browsers)
+
+<Steps>
+  <Step title="Download and unzip the release">
+    Go to the [releases page](https://github.com/better-lyrics/better-lyrics/releases) and download the latest release ZIP. Unzip it to a folder you'll remember.
+  </Step>
+  <Step title="Open the Extensions page">
+    In Chrome, navigate to `chrome://extensions` in the address bar.
+  </Step>
+  <Step title="Enable Developer mode">
+    Toggle **Developer mode** on using the switch in the top-right corner of the Extensions page.
+  </Step>
+  <Step title="Load the unpacked extension">
+    Click **Load unpacked** and select the `chrome/` folder from the unzipped release (or `dist/chrome/` if you built from source).
+  </Step>
+  <Step title="Confirm installation">
+    Better Lyrics should now appear in your extensions list and its icon in the toolbar. Navigate to [music.youtube.com](https://music.youtube.com) to verify it is active.
+  </Step>
+</Steps>
+
+### Firefox
+
+<Steps>
+  <Step title="Download and unzip the release">
+    Go to the [releases page](https://github.com/better-lyrics/better-lyrics/releases) and download the latest release ZIP. Unzip it to a folder you'll remember.
+  </Step>
+  <Step title="Open the Debugging page">
+    In Firefox, navigate to `about:debugging#/runtime/this-firefox` in the address bar.
+  </Step>
+  <Step title="Load a Temporary Add-on">
+    Click **Load Temporary Add-on…** in the This Firefox section.
+  </Step>
+  <Step title="Select the manifest file">
+    In the file picker, open the unzipped folder and select the `manifest.json` file inside it (or `dist/firefox/manifest.json` if you built from source).
+  </Step>
+  <Step title="Confirm installation">
+    Better Lyrics should appear in the Temporary Extensions list. Navigate to [music.youtube.com](https://music.youtube.com) to verify it is active.
+  </Step>
+</Steps>
+
+<Note>
+  Firefox unloads temporary add-ons when the browser is closed — they do not persist across restarts. For a permanent install that survives restarts and receives automatic updates, use the [signed Firefox Add-on listing](https://addons.mozilla.org/en-US/firefox/addon/better-lyrics/) instead.
+</Note>
+
+## Build from Source
+
+Building locally gives you the latest unreleased code and is the path to use when contributing.
+
+### Prerequisites
+
+- **Node.js 22.12 or later** — check with `node --version`
+- **npm** — bundled with Node.js
+
+### Steps
+
+Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/better-lyrics/better-lyrics.git
+cd better-lyrics
+npm install
+```
+
+Run the production build:
+
+```bash
+npm run build
+```
+
+The build script compiles both targets in a single pass. Output lands in:
+
+| Target | Output directory |
+|---|---|
+| Chrome / Chromium | `dist/chrome/` |
+| Firefox | `dist/firefox/` |
+
+Once the build finishes, follow the manual installation steps above and point the file picker at the appropriate `dist/` subfolder.

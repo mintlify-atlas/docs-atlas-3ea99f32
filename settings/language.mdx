@@ -1,0 +1,46 @@
+---
+title: "Language Settings: UI, Translations, and Romanization"
+sidebarTitle: "Language"
+description: "Configure Better Lyrics display language, enable real-time lyric translations, turn on romanization for CJK and Arabic scripts, and choose a target language."
+---
+
+The Language tab controls how Better Lyrics presents text — both the extension's own UI and the lyrics themselves. You can localize the interface to your preferred language, translate every lyric line in real time into another language, and convert non-Latin scripts into a readable Latin-alphabet form. All three features work independently and can be combined freely.
+
+## Language options
+
+| Option | Default | Description |
+| --- | --- | --- |
+| Display Language | Auto-detect | Sets the language used throughout the extension's UI — labels, buttons, and messages. Auto-detect reads the browser's `navigator.language` value and selects the closest available locale. |
+| Romanization | Disabled | Converts lyrics written in non-Latin scripts to a phonetic Latin-alphabet representation. Useful for following along with songs in Japanese, Korean, Arabic, and other scripts. |
+| Translations | Disabled | Fetches a translated version of each lyric line in real time and displays it beneath the original. The translation is requested as each line is about to be displayed. |
+| Translation Language | English | The target language for the Translations feature. Applies to all songs while enabled. |
+
+## Display language
+
+The extension UI is localized via [Crowdin](https://crowdin.com/project/better-lyrics) and currently supports more than 20 locales. When set to **Auto-detect**, the locale is resolved from the browser's language preference (`navigator.language`). If the detected locale does not have a complete translation, the extension falls back to English.
+
+To contribute a translation or improve an existing one, visit the Better Lyrics project on Crowdin.
+
+## Translations
+
+When Translations is enabled, the extension fetches a translated rendering of each lyric line as the song plays. Translation requests are made on demand per line and the results are not stored in the lyrics cache, so re-enabling translations after disabling them will re-fetch from the network. The target language is set by the **Translation Language** dropdown.
+
+The translation language dropdown includes over 130 target languages — from Afrikaans and Albanian through to Zulu — powered by the same translation service that backs Google Translate.
+
+## Romanization
+
+Romanization converts lyrics from scripts that do not use the Latin alphabet into a phonetic Latin representation, making it possible to read along even without knowledge of the original script. The following source scripts are currently supported:
+
+| Script group | Languages |
+| --- | --- |
+| CJK | Japanese, Korean, Chinese (Simplified), Chinese (Traditional) |
+| Cyrillic | Russian |
+| Indic | Hindi, Bengali, Tamil, Telugu, Malayalam, Kannada, Gujarati, Punjabi, Marathi, Urdu, Sinhala |
+| Arabic / Semitic | Arabic, Hebrew |
+| Other | Thai, Greek, Georgian, Khmer, Lao, Persian, Burmese |
+
+Romanization is applied per-line using the same translation backend with a Latin-script output target (`-Latn`), so the result is a phonetic approximation rather than a strict transliteration standard.
+
+<Tip>
+  You can toggle translations and romanization for the **current song** without opening settings. The floating dock (shown at the bottom-right of the screen by default) has dedicated **Translate** and **Romanize** buttons that switch the feature on or off immediately for just the song that is playing. Use this for quick per-song decisions without changing your global setting.
+</Tip>

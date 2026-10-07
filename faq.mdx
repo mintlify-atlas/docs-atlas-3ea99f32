@@ -1,0 +1,120 @@
+---
+title: "Better Lyrics FAQ: Common Questions Answered"
+sidebarTitle: "FAQ"
+description: "Answers to the most common Better Lyrics questions: missing lyrics, settings access, translations, custom themes, fullscreen, mobile support, and more."
+---
+
+Got a question about Better Lyrics? You're in the right place. This page covers the most common issues users run into — from getting lyrics to show up in the first place, to digging into providers, themes, and browser support. If you don't find your answer here, jump into Discord or open a GitHub issue.
+
+<AccordionGroup>
+  <Accordion title="Why can't I see the lyrics?">
+    Better Lyrics only works on [music.youtube.com](https://music.youtube.com) — it will not inject anything on [youtube.com](https://youtube.com). Make sure you're on the correct domain and that the extension is enabled in your browser's extension manager.
+
+    If you're on the right site and the extension is enabled, try refreshing the page. If lyrics still don't appear, open the extension popup and confirm that no settings have been toggled off unexpectedly.
+  </Accordion>
+
+  <Accordion title="How do I change settings?">
+    Click the Better Lyrics icon in your browser's extensions toolbar to open the settings popup. Changes apply immediately — you don't need to reload the page for most settings.
+
+    The exception is after an extension update: some changes (especially CSS-related ones) may require a page refresh before they take effect.
+  </Accordion>
+
+  <Accordion title="My CSS changes aren't showing up. What should I do?">
+    Your CSS is saved regardless of whether it appears immediately. Start by refreshing the page — this resolves the issue after most extension updates.
+
+    If refreshing doesn't help, try disabling the extension and then re-enabling it from your browser's extension manager. Your custom CSS will still be there when it comes back.
+  </Accordion>
+
+  <Accordion title="How do I install custom themes?">
+    Open the extension settings, go to the **Themes** tab, and click **Marketplace** to browse and install community-created themes with one click.
+
+    You can also install a theme directly from a GitHub repository:
+    1. Click **Install from URL** in the Themes tab
+    2. Paste the GitHub repository URL
+    3. Click Install
+
+    Alternatively, you can paste or type CSS directly in the CSS Editor view and save it as a custom theme.
+  </Accordion>
+
+  <Accordion title="How do I enable full-screen mode?">
+    With the YouTube Music window in focus, press **F** on your keyboard. You can also hover over the player bar and click the full-screen icon (**⛶**) that appears.
+
+    If full-screen mode doesn't activate, open the extension settings and make sure the **Disable fullscreen mode** option is not checked under the Display tab.
+  </Accordion>
+
+  <Accordion title="How do I translate lyrics?">
+    Open the extension settings and go to the **Language** tab. Enable the **Translations** toggle, then choose your target language from the dropdown. Translated lyrics will appear alongside (or instead of) the original, depending on your configuration.
+
+    Romanization for non-Latin scripts can be enabled from the same tab.
+  </Accordion>
+
+  <Accordion title="Some lyrics are out of sync, missing, or incorrect. What can I do?">
+    Better Lyrics pulls from multiple providers, so the quickest fix is to try a different one. Open the extension settings, go to the **Sources** tab, and switch to another provider — a better-synced version of the lyrics may already exist there.
+
+    If you want to fix the lyrics for everyone, use **Unison**, the built-in community lyrics platform:
+
+    - **Vote or report** directly from the lyrics panel using the upvote, downvote, and report buttons on the Unison card
+    - **Submit corrected lyrics** by clicking "Submit to Unison" at the bottom of any song's lyrics view — the form pre-fills song metadata, so you just paste your corrected LRC, plain text, or rich-sync lyrics
+    - **Browse and manage submissions** from the Unison page, including a "My submissions" tab to track and edit your own entries
+
+    Other providers (Musixmatch, BiniLyrics, etc.) maintain their own catalogs; corrections submitted to those upstream sources will flow back into Better Lyrics automatically once their databases update.
+  </Accordion>
+
+  <Accordion title="How do I report a bug?">
+    The two best channels are:
+
+    - **GitHub Issues:** [Open an issue](https://github.com/better-lyrics/better-lyrics/issues/new/choose) with as much detail as possible, including steps to reproduce, browser version, and extension version
+    - **Discord:** Join the [Better Lyrics Discord](https://discord.gg/UsHE3d5fWF) and post in **#bug-reports**
+  </Accordion>
+
+  <Accordion title="I don't like the new update. Can I revert to an older version?">
+    Yes. Download a release ZIP from the [GitHub releases page](https://github.com/better-lyrics/better-lyrics/releases) and load it manually as an unpacked extension. Keep in mind that older versions won't receive bug fixes or new features, and may stop working if the YouTube Music site changes.
+  </Accordion>
+
+  <Accordion title="Will this extension ever be paywalled?">
+    No. Better Lyrics is and always will be free and open-source for everyone. The project is sustained by optional donations via [GitHub Sponsors](https://github.com/sponsors/boidushya) — contributing is appreciated but never required.
+  </Accordion>
+
+  <Accordion title="Can I use Better Lyrics on mobile?">
+    Better Lyrics is currently only available for desktop browsers. That said, if you use a mobile browser that supports extensions — such as **Kiwi Browser** on Android — you should be able to install and use it, since the extension is responsive and maintains feature parity across platforms.
+
+    There is no iOS support at this time.
+  </Accordion>
+
+  <Accordion title="Can I use a different lyrics provider?">
+    Yes. Better Lyrics supports multiple providers and lets you reorder or toggle them:
+
+    1. Click the Better Lyrics icon in the extensions toolbar
+    2. Go to the **Sources** tab
+    3. Drag providers to reorder them by priority, or toggle individual ones on and off
+
+    The default priority order runs from syllable-synced sources (Better Lyrics, Unison, BiniLyrics) down through word-synced and line-synced sources, ending with unsynced fallbacks. Adding fully custom providers is not currently supported.
+  </Accordion>
+
+  <Accordion title="Can I use Better Lyrics on other browsers?">
+    Better Lyrics is available for **Chrome**, **Firefox**, and **Microsoft Edge**, as well as any other Chromium-based browser (Brave, Opera, Arc, and similar). Install from the relevant store for your browser:
+
+    - [Chrome Web Store](https://chromewebstore.google.com/detail/better-lyrics/effdbpeggelllpfkjppbokhmmiinhlmg)
+    - [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/better-lyrics/)
+    - [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/better-lyrics-lyrics-for/mjfeaklppoegooljmjicjdbiccgjdlhd)
+  </Accordion>
+
+  <Accordion title="Can I use Better Lyrics on other music streaming services?">
+    No — Better Lyrics is designed exclusively for YouTube Music™ and will not work on other streaming platforms. If you're looking for something similar elsewhere, the following community extensions cover other services:
+
+    - [Spicy Lyrics](https://github.com/Spikerko/spicy-lyrics) — Spotify
+    - [Radiant Lyrics](https://radiant-lyrics.org/) — Tidal & Mobile
+    - [YouLy+](https://github.com/ibratabian17/YouLyPlus) — Apple Music, Tidal
+  </Accordion>
+</AccordionGroup>
+
+Still stuck? Reach out directly through one of these channels:
+
+<CardGroup cols={2}>
+  <Card title="Discord Community" icon="discord" href="https://discord.gg/UsHE3d5fWF">
+    Chat with the community and get real-time help in #support
+  </Card>
+  <Card title="GitHub Issues" icon="circle-dot" href="https://github.com/better-lyrics/better-lyrics/issues/new/choose">
+    Report a bug or request a feature on GitHub
+  </Card>
+</CardGroup>

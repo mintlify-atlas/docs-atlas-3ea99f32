@@ -1,0 +1,194 @@
+---
+title: "AI Agent Guide for Creating Better Lyrics Themes"
+sidebarTitle: "Agent Guide"
+description: "A concise reference for AI agents creating Better Lyrics themes: key CSS variables, DOM structure, animation flags, and common theme patterns."
+---
+
+This page is the official quick reference for AI agents tasked with creating or modifying Better Lyrics themes. It is distilled from [`STYLING-SKILL.md`](https://github.com/better-lyrics/better-lyrics/blob/master/STYLING-SKILL.md), the canonical agent-facing guide maintained alongside the extension source. Read the full `STYLING.md` for exhaustive documentation on every variable; this page covers the minimum you need to produce a working, well-behaved theme.
+
+## Minimal Working Theme
+
+Every valid Better Lyrics theme is plain CSS. The skeleton below is the smallest complete theme — it overrides colors and font size, imports a web font, and sets animation flags.
+
+```css Minimal theme skeleton
+/* @import MUST be the very first line if you use a web font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+/* Root variable overrides */
+:root {
+  --blyrics-font-size: 2.5rem;
+  --blyrics-font-weight: 600;
+  --blyrics-active-opacity: 1;
+  --blyrics-inactive-opacity: 0.25;
+}
+
+/* Declare fonts at line level so CJK fallback resolves correctly */
+.blyrics--line,
+.blyrics--translated,
+.blyrics--romanized {
+  --blyrics-font-family: "Inter", var(--noto-sans-universal), sans-serif;
+}
+```
+
+## Color Variables Quick Reference
+
+These five variables cover the most common color customizations. They are the shorthand knobs that drive `--blyrics-lyric-active-color` and `--blyrics-lyric-inactive-color`.
+
+```css Color variables
+:root {
+  /* Underlying text color (feeds the inactive lyric color calculation) */
+  --blyrics-text-color: color(display-p3 1 1 1 / 1);
+
+  /* Glow color for the drop-shadow pulse on highlighted words */
+  --blyrics-highlight-color: color(display-p3 1 1 1 / 0.5);
+
+  /* Active lyric opacity (applied to display-p3 white by default) */
+  --blyrics-active-opacity: 1;
+
+  /* Inactive lyric opacity */
+  --blyrics-inactive-opacity: 0.3;
+
+  /* Translated / romanized line opacity */
+  --blyrics-translated-opacity: 0.6;
+}
+```
+
+## Typography
+
+Set font size and weight on `:root`. For a custom font, always declare `--blyrics-font-family` at the element level — not on `:root` — so the `--noto-sans-universal` fallback resolves at each element's language boundary and CJK text uses the correct Noto subset.
+
+```css Typography with custom font
+:root {
+  --blyrics-font-size: 3rem;
+  --blyrics-font-weight: 700;
+  --blyrics-line-height: 1.333;
+  --blyrics-translated-font-size: 2rem;
+  --blyrics-translated-font-weight: 600;
+}
+
+/* Correct: declare font at line level */
+.blyrics--line,
+.blyrics--translated,
+.blyrics--romanized {
+  --blyrics-font-family: "My Custom Font", var(--noto-sans-universal), sans-serif;
+}
+```
+
+## Animation Flags
+
+All animation flags accept `1` (enabled) or `0` (disabled). Set them on `:root`.
+
+```css Animation flags
+:root {
+  --blyrics-animate-line-scale: 1;         /* scale pop on line enter/exit */
+  --blyrics-animate-word-wobble: 1;        /* horizontal wobble on active words */
+  --blyrics-animate-highlight-swipe: 1;    /* rich-sync gradient swipe per word */
+  --blyrics-animate-highlight-glow: 1;     /* drop-shadow glow on highlighted words */
+  --blyrics-animate-highlight-fade: 1;     /* opacity fade for line-synced highlights */
+  --blyrics-animate-scroll: 1;             /* smooth WAAPI scroll between lines */
+  --blyrics-animate-instrumental: 1;       /* instrumental fill travel and wave */
+}
+```
+
+To disable all motion (e.g. for a minimal static theme):
+
+```css Disable all animations
+:root {
+  --blyrics-animate-line-scale: 0;
+  --blyrics-animate-word-wobble: 0;
+  --blyrics-animate-highlight-swipe: 0;
+  --blyrics-animate-highlight-glow: 0;
+  --blyrics-animate-highlight-fade: 0;
+  --blyrics-animate-scroll: 0;
+  --blyrics-animate-instrumental: 0;
+  --blyrics-scale: 1;
+  --blyrics-active-scale: 1;
+}
+```
+
+## Layout Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `--blyrics-padding` | `2rem` | Padding above and below each lyric line |
+| `--blyrics-scale` | `0.95` | Scale of inactive lines |
+| `--blyrics-active-scale` | `1` | Scale of the active line |
+| `--blyrics-alignment` | (inherits) | Text alignment: `left`, `center`, or `right` |
+
+```css Layout example
+:root {
+  --blyrics-padding: 1.5rem;
+  --blyrics-scale: 0.92;
+  --blyrics-active-scale: 1;
+}
+
+.blyrics-container {
+  text-align: center;
+}
+```
+
+## Karaoke Surface Styling
+
+When karaoke mode is active (fullscreen video with synced lyrics), lines display over a blurred plate. Style the shared surface class and optionally shrink the video for a framed look.
+
+```css Karaoke surface
+:root {
+  /* Shrink the video slightly to add a framed margin */
+  --blyrics-karaoke-video-scale: 0.94;
+}
+
+#blyrics-karaoke .blyrics-karaoke-surface {
+  border-radius: 0.3em;
+  background: rgb(0 0 0 / 70%);
+  backdrop-filter: blur(12px);
+}
+```
+
+Each stage line carries `data-stage-role` with one of: `current`, `previous`, `queued`, or `gone`. Use these for enter/exit transitions if needed. Do **not** touch `opacity` on stage lines (see Common Mistakes below).
+
+## Common Mistakes to Avoid
+
+Based on the official guidance in `STYLING.md`, these are the mistakes most likely to produce broken or unexpected behavior.
+
+**1. Setting `opacity` on stage lines in karaoke mode**
+
+The engine overrides `opacity` with `!important` on karaoke stage lines via the `--blyrics-stage-opacity` dynamic variable. Any `opacity` rule you write on `.blyrics--line` inside `#blyrics-karaoke` will be silently ignored. Use `color` or `filter: brightness()` if you need to visually dim a line.
+
+**2. Placing `@import` after other rules**
+
+CSS requires `@import` to appear before all other statements. An `@import` placed after any rule (even a comment in some parsers) is ignored by the browser, and your custom font will not load.
+
+```css Wrong — @import after a rule
+:root { --blyrics-font-size: 2rem; }
+@import url('...'); /* ignored */
+```
+
+```css Correct — @import first
+@import url('...');
+:root { --blyrics-font-size: 2rem; }
+```
+
+**3. Declaring `--blyrics-font-family` on `:root`**
+
+Setting the font family on `:root` causes the `var(--noto-sans-universal)` fallback to resolve once at the root, before any lyric element's `lang` attribute is known. The result is that Japanese, Korean, and Chinese text may fall back to a generic sans-serif instead of the correct Noto CJK subset. Always declare custom font families on `.blyrics--line, .blyrics--translated, .blyrics--romanized`.
+
+**4. Using class names without the `blyrics-` prefix for new additions**
+
+If your theme introduces new utility classes, prefix them with `blyrics-` to avoid collisions with YouTube Music's own class names.
+
+**5. Dimming lines with `.blyrics--active` only**
+
+`.blyrics--active` runs on the scroll clock, which leads audio playback by ~0.5 seconds. Lines lose `.blyrics--active` before their last word finishes. If you dim non-active lines, pair the rule with `.blyrics--animating` to keep lines lit while they are still being sung:
+
+```css Correct active/animating pairing
+.blyrics-container > div {
+  opacity: 0.3;
+}
+.blyrics-container > div.blyrics--animating {
+  opacity: 1;
+}
+```
+
+<Note>
+  This page summarizes the most important guidance for rapid theme creation. For the complete variable reference — including animation timing variables, scroll knobs, PiP variables, Unison card variables, and the full selector table — see the [STYLING.md on GitHub](https://github.com/better-lyrics/better-lyrics/blob/master/STYLING.md).
+</Note>

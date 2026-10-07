@@ -1,0 +1,84 @@
+---
+title: "Better Lyrics Privacy Policy and Data Practices"
+sidebarTitle: "Privacy"
+description: "Better Lyrics collects only the minimum data needed to fetch lyrics. API logs are kept 7 days. No personal data is ever sold. Full privacy policy details."
+---
+
+Better Lyrics is built to be privacy-conscious by design. The extension operates with a minimal data footprint: it collects only what is strictly necessary for the lyrics feature to function, retains nothing longer than needed for debugging, and has never sold or monetized user data in any form. This page explains exactly what is collected, how it is used, and what stays entirely on your device.
+
+## Data We Collect
+
+When you use Better Lyrics, two categories of data are involved: information sent automatically with every request to our API, and information you choose to provide.
+
+### Collected Automatically
+
+| Data | Why It's Collected |
+|---|---|
+| **Song metadata** (song name, artist name, album name, YouTube™ video ID) | Sent to our API to look up and return the correct lyrics for the track you're playing |
+| **IP address** | Automatically included with every network request; used temporarily for rate limiting, authentication, and abuse prevention — never stored permanently |
+| **User-Agent string** (browser type, version, OS) | Used for debugging and understanding broad usage patterns; not stored permanently |
+
+### What We Do NOT Collect
+
+- Your browsing history or activity on any site other than `music.youtube.com`
+- Personal information such as your name, email address, or account credentials
+- Any data from other browser tabs or extensions
+
+We do not have user accounts and do not ask you to provide any personal information to use the extension.
+
+## Log Retention
+
+API request logs — including IP address, User-Agent, and request details — are kept for a **maximum of 7 days** for debugging and service health monitoring. After that period, logs are deleted and only aggregated, anonymized analytics data (which cannot be correlated to a specific user) is retained.
+
+## Local Storage
+
+A significant portion of Better Lyrics data never leaves your browser at all. The following is stored locally in your browser's extension storage:
+
+| Data | Storage Type |
+|---|---|
+| Extension settings and preferences | Local + browser sync |
+| Installed themes | Local only |
+| Identity key (for theme publishing) | Local only |
+| Lyrics cache | Local only |
+
+Settings are synced across your devices using your browser's built-in sync mechanism (for example, Chrome Sync or Firefox Sync). This sync is handled entirely by your browser — Better Lyrics does not have access to this sync data.
+
+## Extension Permissions
+
+The table below lists every permission the extension requests, why it needs it, and what data (if any) is read or transmitted as a result.
+
+| Permission | Reason | Data Usage |
+|---|---|---|
+| **Access to `music.youtube.com`** | Required to inject the lyrics UI into YouTube Music™ pages | No data is read or sent from any other site |
+| **Storage** | Saves your settings, installed themes, identity key, and local lyrics cache | All stored locally in your browser; settings synced via your browser's built-in sync |
+| **Alarms** | Schedules background tasks such as periodic theme update checks and cache cleanup | Does not collect or transmit any data |
+| **Downloads** *(optional)* | Required when you export themes or your identity key as a file | Used only at the moment you click an export button; browser download history is not read or modified |
+
+## Third-Party Services
+
+Better Lyrics uses a small number of third-party services to deliver its functionality:
+
+- **Cloudflare** — API hosting, infrastructure, and security (including Cloudflare Workers and Cloudflare Turnstile for abuse prevention). Subject to the [Cloudflare Privacy Policy](https://www.cloudflare.com/privacypolicy/).
+- **LRCLib** — Used as an optional fallback lyrics source. You can disable it in the Sources tab. Subject to [LRCLib's privacy standards](https://lrclib.net/).
+
+Song metadata (song name, artist name, album name, video ID) may be forwarded to third-party lyrics APIs to search for lyrics. No personal information is sent to these third parties.
+
+## No Third-Party Tracking or Analytics
+
+Better Lyrics does not embed any third-party advertising, tracking pixels, or analytics SDKs. There is no behavioral profiling, no cross-site tracking, and no data brokering of any kind.
+
+## Open Source and Auditable
+
+The entire Better Lyrics codebase is publicly available on GitHub. Anyone can inspect exactly what data is collected, how network requests are constructed, and what the extension does with any information it receives. Community review is an integral part of the project's trust model.
+
+[View the source code on GitHub →](https://github.com/better-lyrics/better-lyrics)
+
+## Our Commitment
+
+> **We never have and never will sell or monetize your personal data.**
+
+This is not a legal hedge or a policy that could quietly change — it is a founding principle of the project. Better Lyrics exists to improve your YouTube Music experience, not to harvest data.
+
+<Note>
+  This page is a plain-language summary of our data practices. For the complete legal text, read the full [PRIVACY.md on GitHub](https://github.com/better-lyrics/better-lyrics/blob/HEAD/PRIVACY.md). If you have questions or concerns, contact us at [better-lyrics@boidu.dev](mailto:better-lyrics@boidu.dev).
+</Note>

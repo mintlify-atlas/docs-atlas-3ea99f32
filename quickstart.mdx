@@ -1,47 +1,84 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with Better Lyrics in 5 Minutes"
+sidebarTitle: "Quickstart"
+description: "Start using time-synced lyrics on YouTube Music: install the extension, open a song, and configure translations, provider priority, and themes."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
+Better Lyrics is designed to work the moment it is installed — no account, no API key, no configuration required. This guide walks you through installing the extension, seeing lyrics for the first time, and making the few optional adjustments that most users find worthwhile. The whole process takes about five minutes.
 
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+## Steps
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
+  <Step title="Install the extension">
+    Install Better Lyrics from the store that matches your browser. All three stores offer one-click installation and automatic updates.
 
-    ```bash
-    npm install your-package
-    ```
+    - **Chrome / Brave / Arc / Opera** → [Chrome Web Store](https://chromewebstore.google.com/detail/better-lyrics/effdbpeggelllpfkjppbokhmmiinhlmg)
+    - **Firefox** → [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/better-lyrics/)
+    - **Microsoft Edge** → [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/better-lyrics-lyrics-for/mjfeaklppoegooljmjicjdbiccgjdlhd)
+
+    If you need to sideload a specific version or build from source, see the [Installation guide](installation).
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
-
-    ```bash
-    your-cli init
-    ```
+  <Step title="Open YouTube Music and play a song">
+    Navigate to [music.youtube.com](https://music.youtube.com) and start playing any track. Better Lyrics activates automatically on this domain — there is nothing extra to enable.
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
+  <Step title="Click the Lyrics tab">
+    In the YouTube Music player, click the **Lyrics** tab. Better Lyrics replaces the default lyrics panel with its own. Lyrics load within a few seconds; once they appear, the active line highlights and scrolls into view automatically as the song progresses.
 
-    ```bash
-    your-cli start
-    ```
+    **Tip:** Click any lyric line to seek the song to that exact moment. This works with every sync level — syllable, word, and line.
+  </Step>
+  <Step title="Open settings and explore the options">
+    Click the **Better Lyrics icon** in your browser's extensions toolbar to open the settings popup. You will see five tabs: **General**, **Display**, **Language**, **Sources**, and **Themes**.
+
+    All changes apply instantly — you do not need to refresh YouTube Music or restart your browser.
+  </Step>
+  <Step title="Personalise your experience">
+    A few settings make a noticeable difference right away:
+
+    - **Translations** — Go to the **Language** tab, enable Translations, and pick your target language. Translated lines appear beneath the original lyrics in real time.
+    - **Provider priority** — Go to the **Sources** tab to see all 16 lyric providers ranked by priority. Drag them to reorder or toggle individual providers on and off. If the current song has poor sync, switching providers often fixes it immediately.
+    - **Themes** — Go to the **Themes** tab and open the **Marketplace** to browse community-created CSS themes. Install any theme with one click, or paste your own CSS in the editor for a fully custom look.
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+## Settings Quick Reference
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
+Each tab in the Better Lyrics settings popup controls a distinct area of the extension.
+
+<CardGroup cols={2}>
+  <Card icon="sliders" title="General">
+    Toggle console logs, enable auto-switching to the Lyrics tab when a song starts, and review your local lyrics cache.
+  </Card>
+  <Card icon="eye" title="Display">
+    Control the blurred album art background, full-screen mode, cursor auto-hide, stylized animations (background, wobble, glow), and the Unison dock position.
+  </Card>
+  <Card icon="globe" title="Language">
+    Set the UI display language, enable romanization for scripts like Japanese or Arabic, and configure real-time lyric translations with a target language.
+  </Card>
+  <Card icon="list" title="Sources">
+    Reorder or toggle the 16 lyric providers to set your preferred priority. Better Lyrics tries each enabled provider in order until it finds lyrics.
+  </Card>
+  <Card icon="paintbrush" title="Themes">
+    Choose an installed theme, write custom CSS with live preview, or browse and install themes from the community Marketplace.
+  </Card>
+</CardGroup>
+
+<Tip>
+  If lyrics or CSS styles don't look right after updating the extension, try refreshing the YouTube Music tab. Your settings and custom CSS are always saved and will reappear once the page reloads.
 </Tip>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Lyrics" icon="music" href="features/lyrics">
+    Learn about sync levels, seeking, provider fallback, and the Unison lyrics platform.
+  </Card>
+  <Card title="Translations" icon="language" href="features/translations">
+    Deep-dive into real-time translation, romanization, and supported language options.
+  </Card>
+  <Card title="Theming" icon="paintbrush" href="theming/overview">
+    Explore the CSS editor, the Marketplace, and how to build and publish your own theme.
+  </Card>
+  <Card title="Unison" icon="users" href="unison/overview">
+    Find out how to submit lyrics, vote on contributions, and help improve the community catalog.
+  </Card>
+</CardGroup>

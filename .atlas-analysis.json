@@ -1,0 +1,93 @@
+{
+  "projectType": "saas",
+  "projectName": "Better Lyrics",
+  "projectDescription": "A browser extension for Chrome, Firefox, and Edge that enhances YouTube Music with beautiful time-synced lyrics, real-time translations, romanization, karaoke mode, a CSS theme marketplace, and a community lyrics platform called Unison.",
+  "theme": "almond",
+  "primaryColor": "#f40d34",
+  "lightColor": "#f40d34",
+  "darkColor": "#fc849c",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Features",
+            "pages": [
+              "features/lyrics",
+              "features/translations",
+              "features/karaoke",
+              "features/picture-in-picture"
+            ]
+          },
+          {
+            "group": "Settings",
+            "pages": [
+              "settings/overview",
+              "settings/sources",
+              "settings/display",
+              "settings/language"
+            ]
+          },
+          {
+            "group": "Theming",
+            "pages": [
+              "theming/overview",
+              "theming/css-variables",
+              "theming/marketplace",
+              "theming/agents"
+            ]
+          },
+          {
+            "group": "Unison",
+            "pages": [
+              "unison/overview",
+              "unison/submitting",
+              "unison/voting"
+            ]
+          },
+          {
+            "group": "Contributing & Support",
+            "pages": [
+              "contributing",
+              "faq",
+              "privacy"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Time-synced lyrics with syllable, word, and line-level highlighting",
+    "Real-time translations and romanization for foreign-language tracks",
+    "Karaoke subtitles mode overlaying lyrics on music video fullscreen",
+    "Picture-in-picture floating lyrics window",
+    "CSS theme marketplace with community-created and custom themes",
+    "Unison community lyrics platform for submitting and voting on corrections",
+    "16 configurable lyrics providers with drag-to-reorder priority",
+    "Fullscreen mode with playback controls and seekable progress bar",
+    "Multi-language UI (20+ locales via Crowdin)",
+    "Blurred album art background and stylized animations"
+  ],
+  "publicApiSurface": [
+    "CSS custom properties: --blyrics-* variables for theme customization",
+    "DOM classes: .blyrics-container, .blyrics--line, .blyrics-container[data-layout]",
+    "Extension settings: General, Display, Language, Sources, Themes, Identity tabs",
+    "Lyrics providers: Better Lyrics, Unison, BiniLyrics, Musixmatch, LRCLib, YouTube, YouTube Captions",
+    "Unison API: https://unison.betterlyrics.org/lyrics",
+    "Theme marketplace API: https://themes.betterlyrics.org",
+    "Extension permissions: storage, alarms, optional downloads",
+    "Build scripts: npm run dev, npm run build, npm run build:zip, npm run build:release",
+    "Karaoke attributes: blyrics-karaoke, data-stage-role, data-stage-visible",
+    "Dock control order: source, translate, romanize, offset, refresh, pictureInPicture"
+  ]
+}

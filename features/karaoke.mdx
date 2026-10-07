@@ -1,0 +1,104 @@
+---
+title: "Karaoke Subtitles Mode for Music Videos"
+sidebarTitle: "Karaoke Mode"
+description: "Karaoke mode overlays synced lyrics on music videos in fullscreen, one line at a time on a blurred plate, with title card and duet support."
+---
+
+Karaoke mode turns fullscreen music videos into a proper sing-along experience. Instead of showing the full scrolling lyrics panel, it displays one active lyric line at a time, centered over the video on a blurred frosted-glass plate. The line slides and resizes smoothly as the song progresses, and a title card with song and artist information appears before the first sung line to give you time to get ready.
+
+## How to Activate
+
+Karaoke mode activates automatically when all three conditions are met:
+
+1. A **music video** is playing (not an audio-only track)
+2. The player is in **fullscreen** (press `F` or click the fullscreen icon `⛶` in the player bar)
+3. **Karaoke subtitles** is enabled in settings (it is on by default)
+
+There is nothing to manually switch on mid-song. As soon as you enter fullscreen on a video track with synced lyrics available, the karaoke overlay appears over the video.
+
+To enter fullscreen:
+
+<Steps>
+  <Step title="Start a music video">
+    Navigate to a song on YouTube Music that has a video (the player area will show a video rather than the album artwork thumbnail).
+  </Step>
+  <Step title="Enter fullscreen">
+    Press `F` on your keyboard while the browser window is in focus, or click the fullscreen icon in the player bar.
+  </Step>
+  <Step title="Karaoke activates">
+    If synced lyrics are available for the song, the karaoke overlay appears automatically. The lyrics panel in the side panel is hidden while karaoke is active.
+  </Step>
+</Steps>
+
+## What You See
+
+### Title Card
+
+During the intro — before the first sung line — a title card slides in at the bottom of the video showing the song title, artist name, and songwriter credits (when available). This gives you a moment to orient yourself before singing starts. The card fades out as the first lyric line approaches.
+
+### Active Line Plate
+
+The current lyric line is displayed on a blurred, semi-transparent plate (`backdrop-filter: blur(22px)`) that floats over the video. The plate resizes and repositions fluidly using spring physics as the active line changes length or position. When two consecutive lines share little horizontal overlap, the old plate fades out and a new one snaps into position rather than sliding across the screen.
+
+### End Card
+
+After the last sung line, an end card appears showing the songwriter credits centered on the plate. This is the same `.blyrics-credits` element used in the side panel, styled for the karaoke context.
+
+## Duet Support
+
+For songs with multiple voices, karaoke mode uses the same `data-agent` attribute that drives alignment in the side panel:
+
+| `data-agent` value | Alignment | Use case |
+|---|---|---|
+| `v1` | Left | Primary voice |
+| `v2` | Right | Secondary voice |
+| `v3` | Right | Tertiary voice |
+| `v1000` | Center | Both voices simultaneously (duet chorus) |
+
+Lines from `v2` and `v3` agents appear on the right side of the plate, while `v1` lines appear on the left, creating a natural call-and-response layout on screen.
+
+## Layout Attributes
+
+When karaoke mode is active, the extension sets the `blyrics-karaoke` attribute on two elements:
+
+```html
+<!-- Both elements receive this attribute while karaoke is active -->
+<ytmusic-app-layout blyrics-karaoke>
+<div id="player-page" blyrics-karaoke>
+```
+
+CSS in `public/css/blyrics/karaoke.css` and `public/css/ytmusic/fullscreen.css` uses these attributes to hide the side panel, reposition the video, and render the overlay:
+
+```css
+/* Applied by fullscreen.css when karaoke is active */
+ytmusic-player-page[video-mode][blyrics-karaoke] :is(#player, .html5-video-player) {
+  background: transparent !important;
+}
+```
+
+## Video Frame Scaling
+
+The `--blyrics-karaoke-video-scale` CSS variable controls how much the video frame shrinks to make room for the karaoke plate. A value of `1` (the default) fills the entire screen. Lower values letterbox the video, leaving colored bars at the top and bottom where the overlay can sit without covering the picture:
+
+```css
+/* Shrink the video to 85% to leave room at the bottom */
+:root {
+  --blyrics-karaoke-video-scale: 0.85;
+}
+```
+
+The overlay (`#blyrics-karaoke`) automatically adjusts its bounding box to match the scaled video frame using the computed `--blyrics-karaoke-frame-x` and `--blyrics-karaoke-frame-y` variables.
+
+## Karaoke Setting
+
+To toggle karaoke subtitles:
+
+1. Click the Better Lyrics icon in the extensions toolbar
+2. Go to the **Display** tab
+3. Find **Karaoke subtitles** and enable or disable it
+
+The setting is remembered between sessions. When disabled, entering fullscreen on a music video shows the standard fullscreen lyrics layout instead of the karaoke overlay.
+
+<Note>
+Karaoke mode requires synced lyrics. If the current song only has unsynced lyrics available — or no lyrics at all — the overlay does not appear even in fullscreen video mode. The side panel shows the unsynced text as normal in that case.
+</Note>

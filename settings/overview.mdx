@@ -1,0 +1,52 @@
+---
+title: "Better Lyrics Settings: All Options Explained"
+sidebarTitle: "Overview"
+description: "A reference guide to every Better Lyrics setting. Opens from the extension toolbar icon — changes apply immediately without a page refresh."
+---
+
+To open settings, click the Better Lyrics icon in your browser's extensions toolbar. The popup organizes every option into tabbed sections — General, Display, Language, Sources, Themes, and Identity. Most changes take effect the moment you toggle them, with no page refresh required. In rare cases, such as right after an extension update, you may need to reload the YouTube Music tab for CSS or storage changes to fully apply.
+
+<CardGroup cols={2}>
+  <Card title="General" icon="sliders" href="/settings/overview#general">
+    Logging, auto-switch to the Lyrics tab, and local cache management.
+  </Card>
+  <Card title="Display" icon="display" href="/settings/display">
+    Blurred background, fullscreen mode, animations, passive scroll, and the floating dock position.
+  </Card>
+  <Card title="Language" icon="language" href="/settings/language">
+    UI localization, real-time translations, romanization, and target language selection.
+  </Card>
+  <Card title="Sources" icon="list-ol" href="/settings/sources">
+    Drag to reorder the 16 lyrics providers and toggle individual ones on or off.
+  </Card>
+  <Card title="Themes" icon="palette" href="/theming/overview">
+    Choose installed themes, edit CSS with a live preview, and browse the marketplace.
+  </Card>
+  <Card title="Identity" icon="id-badge" href="/settings/overview#identity">
+    Set your display name and export or import your identity key across devices.
+  </Card>
+</CardGroup>
+
+## General
+
+The General tab contains settings that affect core extension behavior and local data management.
+
+| Option | Default | Description |
+| --- | --- | --- |
+| Show logs | Enabled | Writes diagnostic messages to the browser console under the `[BetterLyrics]` prefix. Useful for troubleshooting but safe to disable in normal use. |
+| Auto switch to Lyrics tab | Disabled | Automatically switches to the Lyrics tab whenever a new song starts, so you never have to click it manually. |
+| Cache Details | — | Shows the number of songs with cached lyrics and the total storage used. Includes a button to clear the local lyrics cache. |
+
+## Identity
+
+The Identity tab manages the persistent handle that Better Lyrics associates with your contributions and published themes.
+
+| Option | Description |
+| --- | --- |
+| Display name | The handle attached to themes you publish to the marketplace. It is auto-generated from a combination of musical adjectives, nouns, and verbs (e.g. "Melodic Bass Solo") but can be changed at any time. |
+| Export identity key | Downloads your identity key as a file so you can back it up or move it to another device. |
+| Import identity key | Restores a previously exported identity key, letting you reclaim your contribution history and published themes on a new device or after reinstalling the extension. |
+
+<Tip>
+  Your identity key is required to publish themes to the marketplace and to interact with **Unison** (upvoting, downvoting, reporting, and submitting lyrics). Back it up with **Export** before reinstalling the extension or switching browsers — it cannot be recovered from the server if lost.
+</Tip>

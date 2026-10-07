@@ -1,0 +1,94 @@
+---
+title: "Theming Better Lyrics with Custom CSS"
+sidebarTitle: "Overview"
+description: "Better Lyrics exposes a full CSS theming API. Override CSS variables, target DOM classes, import web fonts, and share themes via the built-in marketplace."
+---
+
+Better Lyrics ships a complete CSS theming system that lets you restyle every part of the lyrics experience — from the font and colors of individual lyric lines to the blurred album-art background and the YouTube Music player bar. Themes are plain CSS (or the RICS scripting language, compiled automatically to CSS), and every change you make in the built-in editor reflects on the page instantly.
+
+## Opening the CSS Editor
+
+Navigate to **extension settings → Themes tab → CSS Editor**. A full-featured code editor opens inside the popup. Any valid CSS you type there is injected into the YouTube Music page live — no refresh required.
+
+To save your work outside the extension, use the **Export to file** button at the top of the editor. The exported `.css` file can be re-imported later with **Import from file**, making it easy to back up themes or move them between browsers.
+
+## Live Preview
+
+Changes apply immediately without a page refresh. As you type, the extension re-injects your stylesheet into the active YouTube Music tab, so you can see colors, font sizes, and animation flags update in real time. If a change does not appear, refresh the tab once — this is only necessary after a fresh extension update, not during normal theme editing.
+
+## CSS File Structure
+
+The extension organises its own styles into two directories. Understanding what each file controls helps you know which selectors to override.
+
+### `blyrics/` — Core lyrics styling
+
+| File | Purpose |
+|------|---------|
+| `variables.css` | All `--blyrics-*` custom properties (shipped by `@braccato/core`) |
+| `lyrics.css` | Main lyrics container, line styles, translations, romanization |
+| `instrumental.css` | Instrumental break SVG icon and animations |
+| `components.css` | Loader, footer cards, buttons |
+| `misc.css` | Utility classes and the `--noto-sans-universal` font stack |
+| `modal.css` | In-page modal dialogs |
+| `responsive.css` | Media queries (breakpoints at 615 px and 936 px) |
+| `picture-in-picture.css` | Floating lyrics window |
+
+### `ytmusic/` — YouTube Music interface overrides
+
+| File | Purpose |
+|------|---------|
+| `general.css` | General interface overrides, player bar, side panel |
+| `fullscreen.css` | Fullscreen mode layout and player controls |
+| `mobile.css` | Mobile-specific adjustments |
+| `variables.css` | YouTube Music–specific variables |
+
+`variables.css`, `lyrics.css`, and `instrumental.css` under `blyrics/` are build outputs copied from the `@braccato/core` package. Everything else is editable source. The class names, custom properties, and file paths your theme targets are identical regardless of which files are source versus output.
+
+## Three Entry Points for a Theme
+
+Every theme you write can touch three complementary layers:
+
+1. **`:root` CSS variables** — The fastest path. Setting a `--blyrics-*` variable on `:root` overrides the default value everywhere the extension uses it. Colors, font sizes, animation flags, and layout constants all live here.
+
+2. **`.blyrics-*` class overrides** — Direct structural selectors. Target `.blyrics-container`, `.blyrics--line`, `.blyrics--translated`, `.blyrics-credits`, and the rest of the class hierarchy for rules that go beyond variable substitution — custom `filter`, `border`, `background`, `transform-origin`, and so on.
+
+3. **`ytmusic-*` element overrides** — YouTube Music custom elements like `ytmusic-player-page` and `ytmusic-player-bar`. Use these to restyle the host page: the blurred album-art background, the glass player bar, the side panel width, and fullscreen layout tweaks.
+
+## Importing Web Fonts
+
+Place `@import` at the very top of your theme file, before any rules. CSS requires `@import` to precede all other statements.
+
+```css Custom font import
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@200..800&display=swap');
+
+.blyrics--line,
+.blyrics--translated,
+.blyrics--romanized {
+  --blyrics-font-family: "Bricolage Grotesque", var(--noto-sans-universal), sans-serif;
+}
+```
+
+Declare the font override on `.blyrics--line`, `.blyrics--translated`, and `.blyrics--romanized` rather than on `:root`. This lets the `--noto-sans-universal` fallback resolve at each element's language boundary, so Japanese, Korean, and Chinese text still fall back to the correct Noto CJK subset.
+
+## Export and Import
+
+- **Export to file** — Downloads your current theme as a `.css` file. Useful for version-controlling your theme or sharing it outside the marketplace.
+- **Import from file** — Loads a `.css` file into the editor, replacing the current contents. Use this to restore a backup or apply a theme downloaded from elsewhere.
+
+<Tip>
+  Better Lyrics also supports **RICS**, a lightweight scripting language for theme authors. Write your theme in `.rics` syntax and the extension compiles it to CSS automatically via the `rics` package. RICS lets you use variables, mixins, and expressions that keep complex themes readable. Themes published to the marketplace can use either plain CSS or RICS.
+</Tip>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="CSS Variables" icon="code" href="/theming/css-variables">
+    Complete reference for every `--blyrics-*` custom property, including colors, typography, animation flags, and layout constants with their default values.
+  </Card>
+  <Card title="Marketplace" icon="store" href="/theming/marketplace">
+    Browse and install community themes in one click, publish your own theme, and set up auto-updates for your published work.
+  </Card>
+  <Card title="Agent Guide" icon="robot" href="/theming/agents">
+    A concise quick-reference for AI agents creating themes: minimal working skeleton, key variables, common patterns, and mistakes to avoid.
+  </Card>
+</CardGroup>

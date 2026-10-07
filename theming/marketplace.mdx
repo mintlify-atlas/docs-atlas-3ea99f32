@@ -1,0 +1,67 @@
+---
+title: "Better Lyrics Theme Marketplace: Browse and Publish"
+sidebarTitle: "Marketplace"
+description: "Browse community themes, install with one click, install from a GitHub URL, and publish your own theme. Themes auto-update when creators release new versions."
+---
+
+The Better Lyrics Theme Marketplace is a built-in gallery of community-created themes that you can browse, install, and publish without ever leaving the extension. Installed themes update automatically when their creators push new versions, so your setup always reflects the latest improvements.
+
+## Opening the Marketplace
+
+Open the extension popup, navigate to the **Themes** tab, and click the **Marketplace** button. The marketplace panel loads inside the popup and connects to the theme registry at `https://themes.betterlyrics.org`.
+
+## Browsing and Installing Themes
+
+The marketplace landing page shows all available community themes as cards. Each card displays a preview, the theme name, author handle, rating, and download count.
+
+- **Search** — Type a theme name or keyword into the search box to filter results in real time.
+- **Filter** — Sort by highest rating or most downloads to surface the most popular themes.
+- **One-click install** — Click the **Install** button on any theme card. The theme is downloaded, stored locally, and immediately available in your theme selector on the Themes tab.
+
+## Auto-Updates
+
+Installed themes check for updates automatically. When a theme creator publishes a new version, the extension downloads and applies it in the background. You do not need to re-install or manually refresh. If you have edited an installed theme locally, your edits are preserved unless you choose to reset to the upstream version.
+
+## Installing from a GitHub URL
+
+You can install any theme hosted in a public GitHub repository without it appearing in the marketplace listing.
+
+<Steps>
+  <Step title="Open the Marketplace">
+    Navigate to **extension settings → Themes tab → Marketplace**.
+  </Step>
+  <Step title="Click Install from URL">
+    Find and click the **Install from URL** button in the marketplace panel.
+  </Step>
+  <Step title="Enter the repository URL">
+    Paste the full GitHub repository URL (e.g. `https://github.com/username/my-blyrics-theme`) and confirm. The extension fetches the theme metadata and CSS directly from the repository.
+  </Step>
+</Steps>
+
+Themes installed from a URL participate in the same auto-update mechanism — if the repository receives a new commit, the extension picks it up on the next update check.
+
+## Creating and Publishing a Theme
+
+<Steps>
+  <Step title="Write your CSS in the CSS Editor">
+    Open **extension settings → Themes tab → CSS Editor** and write or import your theme. Test it live against YouTube Music before publishing. See the [CSS Variables reference](/theming/css-variables) for all available custom properties.
+  </Step>
+  <Step title="Set a display name in the Identity tab">
+    Navigate to the **Identity** tab in extension settings. Enter a **Display name** — this is the author handle that appears on your theme's marketplace card. Your identity key is stored in `chrome.storage.sync` and used to sign theme ownership, so anyone who installs your theme can verify it came from you. You can export and import this key to carry your identity across devices.
+  </Step>
+  <Step title="Publish from the Themes tab">
+    Return to the **Themes** tab and click **Publish**. The extension packages your CSS, attaches your identity signature, and submits it to the marketplace registry. Once approved, your theme appears in the public gallery.
+  </Step>
+</Steps>
+
+## Theme Identity
+
+Every published theme is cryptographically signed with the author's identity key. This key is generated once per browser profile and stored in `chrome.storage.sync`. It is not a password or an account — it is a local key pair used exclusively to prove ownership of the themes you publish.
+
+- **Export** your identity key from the Identity tab to back it up or move it to another device.
+- **Import** a previously exported key to restore your publishing identity on a new machine.
+- If you lose your identity key, you cannot update or claim themes previously published under that identity.
+
+<Tip>
+  The marketplace accepts themes written in the **RICS** scripting language as well as plain CSS. The extension compiles RICS to CSS automatically, so end-users see standard CSS — but you can author in RICS and take advantage of its variables, expressions, and mixins to keep complex themes maintainable.
+</Tip>

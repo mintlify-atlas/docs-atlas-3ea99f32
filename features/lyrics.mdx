@@ -1,0 +1,110 @@
+---
+title: "Time-Synced Lyrics on YouTube Music"
+sidebarTitle: "Lyrics"
+description: "Better Lyrics displays syllable, word, and line-synced lyrics on YouTube Music. Click any line to seek, scroll follows playback, and 16 providers ensure coverage."
+---
+
+Better Lyrics replaces the default lyrics tab on YouTube Music with a rich, time-synced panel that highlights the exact word or syllable being sung in real time. The panel lives inside the existing lyrics tab — no new UI to learn — and starts loading the moment a song begins. If synced lyrics aren't immediately available, unsynced text from YouTube is shown as a placeholder while better sources are checked in the background.
+
+## Sync Levels
+
+Not all lyrics data carries the same timing detail. Better Lyrics supports four levels of synchronization, from most to least precise:
+
+| Level | What it looks like |
+|---|---|
+| **Syllable** (rich-sync) | Individual syllables light up as each phoneme is sung. A gradient swipe sweeps across each word in time with the music. |
+| **Word** | Whole words highlight one at a time, with timing accurate to each word boundary. |
+| **Line** | The current line highlights as a whole; individual words are not separately timed. |
+| **Unsynced** | All lines are shown at full opacity at once. No line is highlighted during playback. For unsynced lyrics, a passive auto-scroll gently advances the view over the duration of the song. |
+
+The extension always tries to surface the highest sync level available. If only a line-synced source exists for a particular song, it uses that rather than falling back to unsynced.
+
+## Provider Priority
+
+Better Lyrics queries up to 16 lyric sources per song, trying each in priority order until it finds a result that passes a text-similarity check against YouTube's own lyrics. You can reorder or disable individual providers under **Settings → Sources**.
+
+| # | Provider | Sync Level |
+|---|---|---|
+| 1 | Better Lyrics | Syllable |
+| 2 | Unison | Syllable |
+| 3 | BiniLyrics | Syllable |
+| 4 | Unison | Word |
+| 5 | Better Lyrics Portato | Word |
+| 6 | Musixmatch | Word |
+| 7 | Better Lyrics | Line |
+| 8 | Unison | Line |
+| 9 | YouTube Captions | Line |
+| 10 | BiniLyrics | Line |
+| 11 | LRCLib | Line |
+| 12 | Better Lyrics Legato | Line |
+| 13 | Musixmatch | Line |
+| 14 | YouTube | Unsynced |
+| 15 | Unison | Unsynced |
+| 16 | LRCLib | Unsynced |
+
+The list is ordered by sync quality first, then by source reliability. Providers can be toggled off individually — for example, if you prefer not to use a particular upstream service.
+
+## Seeking by Click
+
+Clicking any lyric line instantly seeks the player to that point in the song. Under the hood, the extension dispatches a `CustomEvent` named `blyrics-seek-to` on the `document`, carrying the target time in seconds as its `detail` value:
+
+```js
+// Internal seek event — fired whenever a lyric line is clicked
+document.dispatchEvent(new CustomEvent("blyrics-seek-to", { detail: timeInSeconds }));
+```
+
+After a seek, autoscroll resumes immediately so the panel snaps back to following playback.
+
+## Autoscroll
+
+The lyrics panel scrolls automatically to keep the active line in view. Scrolling uses the Web Animations API (WAAPI) with per-line `translate` animations — each visible line slides into its new position as the active lyric changes, creating a smooth wave effect rather than an instant jump.
+
+Scroll behavior is tunable through CSS knobs:
+
+```css
+/*
+blyrics-target-scroll-pos-ratio = 0.37;
+blyrics-line-scroll-duration = 750ms;
+*/
+```
+
+A value of `0.37` keeps the active line about a third from the top of the panel. `0.5` centers it. If you manually scroll away from the active line, an **autoscroll resume** button appears; clicking it (or waiting for the next line change) resumes tracking.
+
+## Instrumental Breaks
+
+When a song has an intro, outro, or mid-song instrumental section with no lyrics, Better Lyrics shows an animated music-note icon in place of a lyric line. The icon fills progressively over the duration of the break, giving you a visual indication of how long it lasts.
+
+The instrumental indicator uses the same `.blyrics--line` structure as sung lines and respects the `data-agent` attribute for alignment (left, right, or centered for duets). You can style or hide it with the `.blyrics--instrumental` selector.
+
+## DOM Structure for Theme Authors
+
+The lyrics panel follows a consistent class hierarchy that theme authors and custom stylesheets can target:
+
+```html
+<div class="blyrics-container" data-sync="richsync">
+  <div class="blyrics--line blyrics--active" data-agent="v1" data-time="42.1">
+    <div class="blyrics-line-main">...</div>
+    <div class="blyrics--translated blyrics-content-line">...</div>
+    <div class="blyrics--romanized blyrics-content-line">...</div>
+  </div>
+  <!-- more lines... -->
+</div>
+```
+
+Key selectors:
+
+| Selector | Purpose |
+|---|---|
+| `.blyrics-container` | Root wrapper for all lyrics content |
+| `.blyrics--line` | Each lyric line element |
+| `.blyrics--active` | Applied to the currently highlighted line |
+| `.blyrics--animating` | Applied while a line's words are still being sung |
+| `.blyrics--word` | Individual timed-word `<span>` inside a line |
+| `.blyrics--instrumental` | Instrumental break indicator |
+| `.blyrics-word-highlight` | Active-color overlay for each timed word |
+
+The `data-sync` attribute on `.blyrics-container` carries the current sync level: `"richsync"`, `"synced"`, or `"none"`.
+
+<Tip>
+If the lyrics for a song are wrong, missing, or out of sync, open **Settings → Sources** and try a different provider — a better version may already exist in another catalog. You can also submit corrected lyrics directly to Unison from the lyrics panel to help everyone using the extension.
+</Tip>

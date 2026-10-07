@@ -1,0 +1,70 @@
+---
+title: "Better Lyrics: Lyrics for YouTube Music"
+sidebarTitle: "Introduction"
+description: "Better Lyrics is a browser extension that brings time-synced, syllable-level lyrics to YouTube Music, with translations, karaoke mode, and a community lyrics platform."
+---
+
+Better Lyrics is a free, open-source browser extension that replaces YouTube Music's built-in lyrics panel with a far richer experience. Instead of static, unsynced text, it delivers time-synchronized lyrics that highlight word by word — or even syllable by syllable — as your song plays. You can click any line to jump directly to that moment in the track, switch between a library of community and commercial providers, translate lyrics into your language in real time, and style the entire interface with custom CSS themes. It runs quietly in the background with no accounts required and no external setup.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card icon="music" title="Time-Synced Lyrics">
+    Lyrics highlight at the syllable or word level as music plays, so you always know exactly where you are in the song.
+  </Card>
+  <Card icon="language" title="Translations & Romanization">
+    Translate lyrics into any supported language on the fly, or enable romanization for Japanese, Korean, Chinese, Arabic, and more.
+  </Card>
+  <Card icon="microphone" title="Karaoke Mode">
+    A dedicated karaoke attribute keeps past lines dimmed and the active line front and center — perfect for singing along.
+  </Card>
+  <Card icon="paintbrush" title="Theme Marketplace">
+    Browse and install community-created CSS themes from the built-in marketplace, or write your own with the live CSS editor.
+  </Card>
+  <Card icon="list" title="Multiple Providers">
+    Choose from 16 lyric sources — including Better Lyrics, Unison, BiniLyrics, Musixmatch, LRCLib, and YouTube — and drag them into your preferred priority order.
+  </Card>
+  <Card icon="users" title="Unison Community Platform">
+    Submit, vote on, and correct lyrics for every song through Unison, the built-in community lyrics platform that feeds corrections back to all users.
+  </Card>
+  <Card icon="expand" title="Full-Screen Mode">
+    Press <kbd>F</kbd> to fill the screen with lyrics and blurred album art — ideal for desktop listening sessions.
+  </Card>
+  <Card icon="bolt" title="Lightweight & Private">
+    No analytics, no personal data collection, no third-party trackers. Settings sync across devices via your browser's built-in sync.
+  </Card>
+</CardGroup>
+
+## At a Glance
+
+| Detail | Value |
+|---|---|
+| License | GPL-3.0 |
+| GitHub Stars | 900+ |
+| Version | 3.0.0 |
+| Browsers | Chrome, Firefox, Edge (and other Chromium-based browsers) |
+| Contributors | 22+ |
+
+## How It Works
+
+Better Lyrics injects directly into `music.youtube.com` using the browser's content script system. The extension uses a **dual-world architecture** defined in its manifest:
+
+- **MAIN world scripts** (`src/videoQualityPage.ts`, `public/earlyInject.js`, `public/script.js`, `src/pageWorld.ts`) run in the same JavaScript context as the YouTube Music page itself. This allows them to read page state — such as the currently playing song's metadata and the player's current time — without crossing the extension boundary.
+
+- **ISOLATED world scripts** (`src/index.ts`) run in a separate, sandboxed context. This is where the core extension logic lives: fetching lyrics from providers, injecting the lyrics UI into the DOM, managing settings, and coordinating translations. The isolation protects the extension from any JavaScript running on the page.
+
+The two worlds communicate through custom DOM events (such as `blyrics-seek-to` and `blyrics-send-player-time`), which pass playback information cleanly across the boundary. The result is a lyrics panel that stays perfectly in sync with playback without requiring any modifications to YouTube Music's own code.
+
+## Supported Browsers
+
+Better Lyrics is published to all three major browser extension stores and works on any Chromium-based browser (Brave, Opera, Arc, and others) using the Chrome build.
+
+| Browser | Store |
+|---|---|
+| Google Chrome | [Chrome Web Store](https://chromewebstore.google.com/detail/better-lyrics/effdbpeggelllpfkjppbokhmmiinhlmg) |
+| Mozilla Firefox | [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/better-lyrics/) |
+| Microsoft Edge | [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/better-lyrics-lyrics-for/mjfeaklppoegooljmjicjdbiccgjdlhd) |
+
+<Note>
+  Better Lyrics only activates on **music.youtube.com**. It will not run on youtube.com or any other site. If you open a regular YouTube tab, the extension stays completely dormant.
+</Note>

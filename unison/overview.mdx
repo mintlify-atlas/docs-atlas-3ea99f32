@@ -1,0 +1,73 @@
+---
+title: "Unison: Community-Powered Lyrics for Better Lyrics"
+sidebarTitle: "Overview"
+description: "Unison is Better Lyrics' built-in community lyrics platform. Submit corrections, vote on quality, browse the feed, and help everyone get accurate synced lyrics."
+---
+
+Unison is Better Lyrics' built-in, community-driven lyrics platform. It exists because no single automated source is perfectly accurate for every track — timing drifts, lyrics get misattributed, and some songs simply aren't covered anywhere else. Unison closes that gap by letting anyone submit corrected or original lyrics, vote on quality, and flag problems directly from inside the extension. Every contribution flows back to all Better Lyrics users automatically once it passes through the curator review pipeline.
+
+## How Unison integrates with the extension
+
+When Unison is the active lyrics provider for the current song, a **Unison card** appears beneath the lyrics in the side panel. The card shows the submission's author, confidence tier, and community score, along with three action buttons: upvote (👍), downvote (👎), and report (🚩). These buttons are always one click away — no need to leave YouTube Music.
+
+A second set of vote buttons lives in a **floating dock** that hovers over the side panel. Because the dock stays anchored to a corner of the panel rather than scrolling with the lyrics, you can cast a vote or flag an issue without scrolling back down to the footer.
+
+## What you can do
+
+- **Vote** on the active submission to signal whether it is accurate and well-timed.
+- **Report** a submission with a specific reason so curators know exactly what to fix.
+- **Submit corrected or new lyrics** using the form on the Unison page, pre-filled with metadata from the current song.
+- **Browse the community feed** to see recent contributions, filter by sync type or language, and discover high-quality entries.
+- **Manage your own submissions** from the "My Submissions" tab — edit, track review status, or withdraw entries you have previously submitted.
+
+## Accessing the Unison page
+
+The Unison web app can be reached in two ways:
+
+1. **From the Unison card** — click the Unison logo or the "Open Unison" link shown in the footer of the lyrics panel.
+2. **Directly in your browser** — navigate to [https://unison.betterlyrics.org](https://unison.betterlyrics.org).
+
+The page works independently of the extension for browsing and submitting lyrics, but the extension provides single-click access with song metadata already filled in.
+
+## API endpoint
+
+The extension fetches Unison lyrics from:
+
+```
+https://unison.betterlyrics.org/lyrics
+```
+
+Signed write operations (votes, reports, submissions) also talk to `https://unison.betterlyrics.org`. The extension is declared externally connectable to the following origins, which means the Unison web app can communicate with the extension directly without needing browser-level redirects:
+
+| Origin | Purpose |
+|---|---|
+| `https://unison.betterlyrics.org/*` | Primary production endpoint |
+| `https://unison.boidu.dev/*` | Alternate / dev endpoint |
+| `https://blrcunison.vercel.app/*` | Vercel staging deployment |
+| `https://unison.prjktla.my.id/*` | Community mirror |
+
+## Trust tiers and the review flow
+
+Submissions do not go live instantly. When you submit lyrics, the entry enters a **pending** state and is held for curator review. The reasons a revision stays pending rather than going live automatically include:
+
+- **Sealed** — the entry was locked by a curator and requires explicit approval before any change goes live.
+- **Flagged** — the submission was reported and is awaiting review.
+- **Large text drift** — the lyrics differ significantly from the previous approved version and need a human check.
+- **Large timing drift** — the timestamps shift substantially relative to the anchor revision.
+
+Once approved, the submission is assigned a **confidence tier** — `low` (unverified), `medium` (trusted), or `high` (top-rated) — based on community engagement and curator assessment. The tier is displayed as a pill badge on every Unison card so you can gauge trustworthiness at a glance.
+
+<Note>
+  Unison replaces LRCLIBup as the recommended path for contributing lyrics corrections. If you previously submitted via LRCLIBup, use Unison going forward — it offers richer tooling, revision history, and a direct connection to the extension.
+</Note>
+
+## Explore Unison features
+
+<CardGroup cols={2}>
+  <Card title="Submitting Lyrics" icon="pen-to-square" href="/unison/submitting">
+    Learn how to submit corrected or new lyrics to Unison directly from the extension, including supported formats and quality guidelines.
+  </Card>
+  <Card title="Voting & Reporting" icon="thumbs-up" href="/unison/voting">
+    Upvote accurate lyrics, downvote bad ones, and report problems with specific reasons so curators can act quickly.
+  </Card>
+</CardGroup>

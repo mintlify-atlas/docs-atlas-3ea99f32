@@ -1,0 +1,186 @@
+---
+title: "CSS Variables Reference for Better Lyrics Themes"
+sidebarTitle: "CSS Variables"
+description: "Complete reference for all --blyrics-* CSS custom properties. Covers colors, typography, animations, layout, and karaoke-specific variables with default values."
+---
+
+Better Lyrics defines all of its visual and behavioral defaults as `--blyrics-*` CSS custom properties on `:root`. Overriding any of them in your theme immediately changes the corresponding aspect of the lyrics experience — no JavaScript hooks or class additions required. The sections below cover every category of variable, followed by the key DOM classes you can target directly, karaoke-specific hooks, and a full working example.
+
+## Colors
+
+The color variables use the `display-p3` wide color space by default, giving vivid results on capable displays and graceful fallback on sRGB screens. The active and inactive lyric colors are computed from two underlying knobs (`--blyrics-active-opacity` and `--blyrics-inactive-opacity`) so you can adjust opacity without rewriting the full `color()` expression.
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `--blyrics-ui-text-color` | `color(display-p3 1 1 1 / 1)` | Color of non-lyric UI text (loader, buttons) |
+| `--blyrics-glow-color` | `color(display-p3 1 1 1 / 0.5)` | Drop-shadow glow color on highlighted words |
+| `--blyrics-error-color` | `color(display-p3 0.992 0.882 0.882)` | Color used for error messages |
+| `--blyrics-lyric-active-color` | `color(display-p3 1 1 1 / var(--blyrics-active-opacity, 1))` | Color of the currently active lyric line |
+| `--blyrics-lyric-inactive-color` | Derived from `--blyrics-text-color` at `--blyrics-inactive-opacity` (0.3) | Color of inactive lyric lines |
+| `--blyrics-footer-bg-color` | `hsla(0, 0%, 100%, 0.1)` | Background color of footer cards |
+| `--blyrics-footer-border-color` | `hsla(0, 0%, 100%, 0.1)` | Border color of footer cards |
+| `--blyrics-footer-text-color` | `#aaa` | Text color in the footer |
+| `--blyrics-footer-link-color` | `#fff` | Link color in the footer |
+
+Two shorthand opacity knobs drive the active and inactive colors:
+
+```css Color opacity shorthand
+:root {
+  --blyrics-active-opacity: 1;      /* fully opaque active lyrics */
+  --blyrics-inactive-opacity: 0.3;  /* 30% opacity for inactive lines */
+  --blyrics-translated-opacity: 0.6;
+}
+```
+
+## Typography
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `--blyrics-font-family` | Unset (falls back to default stack) | Explicit font family override for lyrics |
+| `--blyrics-font-size` | `3rem` | Font size for lyric lines |
+| `--blyrics-font-weight` | `700` | Font weight for lyric lines |
+| `--blyrics-line-height` | `1.333` | Line height for lyric text |
+| `--blyrics-translated-font-size` | `2rem` | Font size of translated/romanized lines |
+| `--blyrics-translated-font-weight` | `600` | Font weight of translated/romanized lines |
+| `--blyrics-translated-font-family` | Unset (uses `--blyrics-font-family` or default stack) | Font family for translated/romanized lines |
+| `--blyrics-translated-color` | `color(display-p3 1 1 1 / var(--blyrics-translated-opacity, 0.6))` | Color of translated/romanized lines |
+
+### The Noto Sans Universal Fallback
+
+The extension resolves `--noto-sans-universal` at each lyric and translation element's language boundary, selecting the appropriate Japanese, Korean, Simplified Chinese, Traditional Chinese (Taiwan), or Hong Kong Noto subset. Setting `--blyrics-font-family` on `:root` causes the CSS engine to resolve the fallback before language is known. Declare custom fonts at the element level instead:
+
+```css Language-aware font override
+.blyrics--line,
+.blyrics--translated,
+.blyrics--romanized {
+  --blyrics-font-family: "My Custom Font", var(--noto-sans-universal), sans-serif;
+}
+```
+
+This way, `--noto-sans-universal` resolves in the correct language context and CJK text always falls back to the matching Noto subset.
+
+## Animation Flags
+
+Animation flags use `1` (on) / `0` (off) values. Set any flag to `0` on `:root` to disable that animation engine-wide.
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `--blyrics-animate-line-scale` | `1` | Scale animation on line enter/exit |
+| `--blyrics-animate-word-wobble` | `1` | Subtle horizontal wobble on active words |
+| `--blyrics-animate-highlight-swipe` | `1` | Rich-sync gradient swipe across each word |
+| `--blyrics-animate-highlight-glow` | `1` | Drop-shadow glow pulse on highlighted words |
+| `--blyrics-animate-highlight-fade` | `1` | Opacity fade-in on line-synced highlights |
+| `--blyrics-animate-scroll` | `1` | Smooth WAAPI scroll animation between lines |
+| `--blyrics-animate-instrumental` | `1` | Instrumental fill travel, wave flattening, and wave oscillation |
+
+The default stylesheet also includes a `prefers-reduced-motion: reduce` block that disables vestibular triggers (line scaling, word wobble, instrumental fill motion) while keeping scroll and gradient effects active.
+
+## Layout
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `--blyrics-padding` | `2rem` | Standard padding used in lyric lines and UI components |
+| `--blyrics-scale` | `0.95` | Scale factor applied to inactive lyric lines |
+| `--blyrics-active-scale` | `1` | Scale factor applied to the active lyric line |
+| `--blyrics-alignment` | (follows `text-align`) | Text alignment for lyric lines (`left`, `center`, or `right`) |
+| `--blyrics-panel-size` | `50%` | Width of the lyrics panel in audio-only mode |
+| `--blyrics-video-panel-size` | `30%` | Width of the lyrics panel in video mode |
+| `--blyrics-fullscreen-panel-size` | `66%` | Width of the lyrics panel in fullscreen audio mode |
+| `--blyrics-fullscreen-video-panel-size` | `25%` | Width of the lyrics panel in fullscreen video mode |
+
+## DOM Classes
+
+These are the stable structural classes you can target directly in a theme. All class names use the `blyrics-` prefix.
+
+| Class | Element | Description |
+|-------|---------|-------------|
+| `.blyrics-container` | `div` | Root wrapper for all lyrics; carries `data-sync` and `data-loader-visible` attributes |
+| `.blyrics--line` | `div` | One lyric line; carries `data-agent`, `data-time`, `data-duration` |
+| `.blyrics--translated` | `div` | Translation text row beneath its parent line |
+| `.blyrics--romanized` | `div` | Romanization text row beneath its parent line |
+| `.blyrics-credits` | `p` | Songwriter credits line after the last lyric (`p`, not `div`, so `.blyrics-container > div` rules skip it) |
+| `.blyrics--active` | added to `.blyrics--line` | Line is the current scroll target (scroll clock, leads audio by 0.5 s) |
+| `.blyrics--animating` | added to `.blyrics--line` | Line's WAAPI animations are live (audio clock, holds until the last word finishes) |
+| `.blyrics--word` | `span` | A single timed word inside a lyric line |
+| `.blyrics-word-highlight` | `span` | Active-color overlay for each timed word (positioned over the base word, `aria-hidden`) |
+| `.blyrics--instrumental` | `div` | Instrumental break container; also carries `.blyrics--line` |
+| `.blyrics--error` | `div` | Error message shown when lyrics cannot be fetched |
+
+### Container Data Attributes
+
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| `data-sync` | `"richsync"`, `"synced"`, `"none"` | Synchronization level of the current lyrics |
+| `data-loader-visible` | `"true"`, `"false"` | Whether the loading spinner is shown |
+| `data-credits-focused` | present / absent | Songwriter credits hold the scroll focus |
+
+### Multi-Voice Agent Alignment
+
+The `data-agent` attribute on `.blyrics--line` controls per-voice alignment in duets and multi-voice tracks:
+
+| Value | Alignment |
+|-------|-----------|
+| `v1` | Left (primary voice) |
+| `v2`, `v3` | Right (secondary / tertiary voice) |
+| `v1000` | Center (both voices simultaneously) |
+
+## Karaoke CSS
+
+When the **Karaoke subtitles** option is on and a video is in fullscreen, synced lines display over the video on a blurred plate. The surface and scale are controlled by two hooks.
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `--blyrics-karaoke-video-scale` | `1` | Unitless scale applied to the video and overlay together; `0.94` adds a subtle letterbox margin |
+
+The `.blyrics-karaoke-surface` class is shared by both lyric plates and the intro title card, so styling it once applies everywhere:
+
+```css Karaoke surface
+#blyrics-karaoke .blyrics-karaoke-surface {
+  border-radius: 0.3em;
+  background: rgb(0 0 0 / 70%);
+  backdrop-filter: blur(12px);
+}
+```
+
+### Stage Line Roles
+
+Each line in the karaoke stage carries a `data-stage-role` attribute:
+
+| Value | Meaning |
+|-------|---------|
+| `current` | The line currently being sung and displayed |
+| `previous` | The line that just left the stage |
+| `queued` | The next line, pre-rendered off-screen |
+| `gone` | A line that has fully exited |
+
+<Warning>
+  Never set `opacity` directly on karaoke stage lines. The engine overrides `opacity` with `!important` via the `--blyrics-stage-opacity` dynamic variable to manage line enter/exit transitions. A rule in your theme cannot win that battle, and you will end up with lines stuck visible or invisible.
+</Warning>
+
+## Example Theme Snippet
+
+```css Custom theme example
+/* 1. Import a web font first — @import must be the very first statement */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+
+/* 2. Override color and size variables */
+:root {
+  --blyrics-font-size: 2.5rem;
+  --blyrics-font-weight: 600;
+  --blyrics-active-opacity: 1;
+  --blyrics-inactive-opacity: 0.2;
+}
+
+/* 3. Declare the custom font at line level for CJK-aware fallback */
+.blyrics--line,
+.blyrics--translated,
+.blyrics--romanized {
+  --blyrics-font-family: "Instrument Serif", var(--noto-sans-universal), sans-serif;
+}
+```
+
+This three-step pattern — import font, set root variables, declare font at line level — is the recommended starting point for any custom font theme.
+
+<Note>
+  Do not modify `--noto-sans-universal` directly. It is resolved dynamically by the extension to match the language of each lyric element. Overwriting it breaks CJK font fallback for Japanese, Korean, and Chinese tracks.
+</Note>
