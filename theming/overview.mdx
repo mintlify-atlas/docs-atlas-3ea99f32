@@ -1,5 +1,5 @@
 ---
-title: "Theming Better Lyrics with Custom CSS"
+title: "Better Lyrics Theming Guide: Custom CSS and Variables"
 sidebarTitle: "Overview"
 description: "Better Lyrics exposes a full CSS theming API. Override CSS variables, target DOM classes, import web fonts, and share themes via the built-in marketplace."
 ---
@@ -24,6 +24,7 @@ The extension organises its own styles into two directories. Understanding what 
 
 | File | Purpose |
 |------|---------|
+| `index.css` | The `@import` list the extension loads; all other files reach the page through it |
 | `variables.css` | All `--blyrics-*` custom properties (shipped by `@braccato/core`) |
 | `lyrics.css` | Main lyrics container, line styles, translations, romanization |
 | `instrumental.css` | Instrumental break SVG icon and animations |
@@ -41,6 +42,8 @@ The extension organises its own styles into two directories. Understanding what 
 | `fullscreen.css` | Fullscreen mode layout and player controls |
 | `mobile.css` | Mobile-specific adjustments |
 | `variables.css` | YouTube Music–specific variables |
+
+A separate top-level `themesong.css` file provides compatibility styles for the ThemeSong browser extension.
 
 `variables.css`, `lyrics.css`, and `instrumental.css` under `blyrics/` are build outputs copied from the `@braccato/core` package. Everything else is editable source. The class names, custom properties, and file paths your theme targets are identical regardless of which files are source versus output.
 

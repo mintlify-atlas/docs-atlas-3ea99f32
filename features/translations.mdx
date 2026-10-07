@@ -1,7 +1,7 @@
 ---
-title: "Real-Time Lyrics Translations and Romanization"
+title: "Lyrics Translations and Romanization — Better Lyrics"
 sidebarTitle: "Translations"
-description: "Enable translations or romanization for any song in Better Lyrics. Supports 50+ languages with a per-song toggle and always-on setting in extension options."
+description: "Enable translations or romanization for any song in Better Lyrics. Supports 50+ languages, with per-song dock toggle and persistent extension settings."
 ---
 
 Better Lyrics can translate every lyric line into your preferred language, or convert non-Latin scripts into their phonetic Latin equivalents (romanization), as the song plays. Both features work line by line in real time: translated or romanized text appears beneath each original lyric as the panel scrolls through the song. You can switch them on for a single session using the floating dock, or keep them always enabled in extension settings.
@@ -76,8 +76,7 @@ Relevant CSS classes and variables:
 | `--blyrics-translated-font-size` | Font size for translated/romanized rows (default `2rem`) |
 | `--blyrics-translated-font-weight` | Font weight for translated/romanized rows (default `600`) |
 | `--blyrics-translated-font-family` | Font family for translated/romanized rows |
-| `--blyrics-translated-color` | Text color for translated/romanized rows |
-| `--blyrics-translated-opacity` | Opacity of translated/romanized text (used in the default color) |
+| `--blyrics-translated-color` | Text color for translated/romanized rows (default `color(display-p3 1 1 1 / 0.6)`) |
 
 If romanization data is timed (syllable-level), the `.blyrics--romanized` element can contain the same `.blyrics-line-main`, `.blyrics-word-group`, and `.blyrics--word` structure as the primary line, enabling per-word highlighting on the romanized text.
 

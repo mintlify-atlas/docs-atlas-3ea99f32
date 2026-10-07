@@ -1,5 +1,5 @@
 ---
-title: "Karaoke Subtitles Mode for Music Videos"
+title: "Karaoke Subtitles Mode for Music Videos — Better Lyrics"
 sidebarTitle: "Karaoke Mode"
 description: "Karaoke mode overlays synced lyrics on music videos in fullscreen, one line at a time on a blurred plate, with title card and duet support."
 ---
@@ -38,7 +38,7 @@ During the intro — before the first sung line — a title card slides in at th
 
 ### Active Line Plate
 
-The current lyric line is displayed on a blurred, semi-transparent plate (`backdrop-filter: blur(22px)`) that floats over the video. The plate resizes and repositions fluidly using spring physics as the active line changes length or position. When two consecutive lines share little horizontal overlap, the old plate fades out and a new one snaps into position rather than sliding across the screen.
+The current lyric line is displayed on a blurred, semi-transparent plate (`backdrop-filter: blur(12px)`) that floats over the video. The plate resizes and repositions fluidly using spring physics as the active line changes length or position. When two consecutive lines share little horizontal overlap, the old plate fades out and a new one snaps into position rather than sliding across the screen.
 
 ### End Card
 
@@ -67,12 +67,12 @@ When karaoke mode is active, the extension sets the `blyrics-karaoke` attribute 
 <div id="player-page" blyrics-karaoke>
 ```
 
-CSS in `public/css/blyrics/karaoke.css` and `public/css/ytmusic/fullscreen.css` uses these attributes to hide the side panel, reposition the video, and render the overlay:
+CSS in `public/css/blyrics/karaoke.css` and `public/css/ytmusic/fullscreen.css` uses these attributes to hide the side panel, reposition the video, and render the overlay. The fullscreen rules exclude karaoke mode via `:not([blyrics-karaoke])`, so normal fullscreen layout doesn't interfere. Theme authors can use the attribute to skip their own fullscreen rules in karaoke:
 
 ```css
-/* Applied by fullscreen.css when karaoke is active */
-ytmusic-player-page[video-mode][blyrics-karaoke] :is(#player, .html5-video-player) {
-  background: transparent !important;
+/* Skip a fullscreen rule when karaoke owns the video */
+ytmusic-player-page[player-fullscreened]:not([blyrics-dfs], [blyrics-karaoke]) #blyrics-watermark {
+  display: none;
 }
 ```
 
@@ -87,7 +87,7 @@ The `--blyrics-karaoke-video-scale` CSS variable controls how much the video fra
 }
 ```
 
-The overlay (`#blyrics-karaoke`) automatically adjusts its bounding box to match the scaled video frame using the computed `--blyrics-karaoke-frame-x` and `--blyrics-karaoke-frame-y` variables.
+The overlay (`#blyrics-karaoke`) automatically adjusts its bounding box to match the scaled video frame using the `--blyrics-karaoke-frame-x` and `--blyrics-karaoke-frame-y` CSS variables set by `fullscreen.css`.
 
 ## Karaoke Setting
 

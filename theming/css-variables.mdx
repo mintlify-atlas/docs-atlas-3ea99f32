@@ -1,7 +1,7 @@
 ---
-title: "CSS Variables Reference for Better Lyrics Themes"
+title: "CSS Custom Properties Reference for Better Lyrics Themes"
 sidebarTitle: "CSS Variables"
-description: "Complete reference for all --blyrics-* CSS custom properties. Covers colors, typography, animations, layout, and karaoke-specific variables with default values."
+description: "Complete reference for all --blyrics-* CSS custom properties: colors, typography, animations, layout, and karaoke variables with default values."
 ---
 
 Better Lyrics defines all of its visual and behavioral defaults as `--blyrics-*` CSS custom properties on `:root`. Overriding any of them in your theme immediately changes the corresponding aspect of the lyrics experience — no JavaScript hooks or class additions required. The sections below cover every category of variable, followed by the key DOM classes you can target directly, karaoke-specific hooks, and a full working example.
@@ -21,6 +21,7 @@ The color variables use the `display-p3` wide color space by default, giving viv
 | `--blyrics-footer-border-color` | `hsla(0, 0%, 100%, 0.1)` | Border color of footer cards |
 | `--blyrics-footer-text-color` | `#aaa` | Text color in the footer |
 | `--blyrics-footer-link-color` | `#fff` | Link color in the footer |
+| `--blyrics-discord-hover-color` | `#5865f2` | Hover background color for the Discord button |
 
 Two shorthand opacity knobs drive the active and inactive colors:
 
@@ -82,7 +83,6 @@ The default stylesheet also includes a `prefers-reduced-motion: reduce` block th
 | `--blyrics-padding` | `2rem` | Standard padding used in lyric lines and UI components |
 | `--blyrics-scale` | `0.95` | Scale factor applied to inactive lyric lines |
 | `--blyrics-active-scale` | `1` | Scale factor applied to the active lyric line |
-| `--blyrics-alignment` | (follows `text-align`) | Text alignment for lyric lines (`left`, `center`, or `right`) |
 | `--blyrics-panel-size` | `50%` | Width of the lyrics panel in audio-only mode |
 | `--blyrics-video-panel-size` | `30%` | Width of the lyrics panel in video mode |
 | `--blyrics-fullscreen-panel-size` | `66%` | Width of the lyrics panel in fullscreen audio mode |
